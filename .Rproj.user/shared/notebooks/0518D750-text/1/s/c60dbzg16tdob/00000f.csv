@@ -1,0 +1,3 @@
+"0","# Levanto el dataset de la encuesta"
+"0",""
+"0","df_encuesta <- read_rds(here::here(""Outputs"", ""df_encuesta.rds""))"

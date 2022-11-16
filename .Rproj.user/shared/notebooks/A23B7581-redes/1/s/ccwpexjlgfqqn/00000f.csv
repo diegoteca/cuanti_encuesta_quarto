@@ -1,0 +1,6 @@
+"0","#| echo: false"
+"0","#| output: true"
+"0",""
+"0","nodos <- red_diego |>"
+"0","activate(nodes) |>"
+"0","as_tibble()"
