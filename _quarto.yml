@@ -2,7 +2,7 @@ project:
   type: book
 
 book:
-  title: "Análisis de datos de encuesta cuanti"
+  title: "Informe Encuesta Metodología y Técnicas Cuantitativas"
   author: "Diego Armando Datos"
   date: now
   chapters:
