@@ -15,7 +15,7 @@ book:
     - references.qmd
 
 bibliography: [bibliography.bib]
-csl: chicago-fullnote-bibliography.csl
+csl: chicago-authordate-bibliography.csl
 
 format:
   html:

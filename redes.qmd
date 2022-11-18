@@ -39,7 +39,7 @@ La explicitación de lo anterior es importante por la siguiente razón. El anál
 
 a\) Una **matriz de adyacencia** (*adjacency matrix*) en donde las filas y las columnas son asignados para los (mismos) nodos de la red y la presencia de una relación es representada con un valor numérico. Se dice que es una matriz cuadrada y dispersa porque tiene la misma cantidad de filas y columnas y puede que muchas de sus celdas contengan un valor "0". Se suele considerar la representación estándar de esta técnica.
 
-b)  Una **lista de lazos** (e*dge list*) en donde (sólo) se "listan" todas las relaciones de la red. Es una opción que, en comparación a la opción "a", suele ocupar menos espacio en memoria ya que sólo representa la presencia y/o intensidad de las relaciones entre los nodos. En general se trata de una estructura más larga que ancha ya que cada relación ocupa una fila y las columnas se suelen limitar (aunque no necesariamente) a algo como "origen" (*from*), "destino" (*to*) e "intensidad de la relación".
+b\) Una **lista de lazos** (e*dge list*) en donde (sólo) se "listan" todas las relaciones de la red. Es una opción que, en comparación a la opción "a", suele ocupar menos espacio en memoria ya que sólo representa la presencia y/o intensidad de las relaciones entre los nodos. En general se trata de una estructura más larga que ancha ya que cada relación ocupa una fila y las columnas se suelen limitar (aunque no necesariamente) a algo como "origen" (*from*), "destino" (*to*) e "intensidad de la relación".
 
 c\) Una **lista de adyacencia** (*adjacency list*) que puede considerarse un híbrido entre las opciones "a" y "b". En este caso cada nodo se representan en una fila y cada una de ellas se "listan" todas sus relaciones con otros nodos. Dado lo anterior esta estructura tiene tantas filas como nodos pero la cantidad de columnas de cada fila es igual a la cantidad de relaciones que tenga cada nodo.
 
@@ -158,6 +158,7 @@ mutate(edge_centrality_betw = centrality_edge_betweenness())
 ```{r}
 #| label: graph_diego
 #| echo: false
+#| warning: false
 #| output: true
 
 graph_diego <- ggraph(net_diego, layout = "kk") +
@@ -178,6 +179,7 @@ ggsave(here("Outputs", "graph_diego.png"))
 ```{r}
 #| label: net_nodes
 #| echo: false
+#| warning: false
 #| output: true
 
 nodos <- net_diego |>
@@ -188,11 +190,12 @@ as_tibble()
 ```{r}
 #| label: community_diego
 #| echo: false
+#| warning: false
 #| output: true
 
 comunnity_diego <- ggraph(net_diego, layout = "kk") + 
   geom_edge_link(aes(alpha = stat(index)), show.legend = FALSE) + 
-  geom_node_point(aes(colour = comunidad), size = 5) +
+  geom_node_point(aes(colour = node_comunidad), size = 5) +
   geom_node_text(aes(label = siglas), repel = TRUE)
   theme_graph(foreground = 'steelblue', 
               fg_text_colour = 'white', 
