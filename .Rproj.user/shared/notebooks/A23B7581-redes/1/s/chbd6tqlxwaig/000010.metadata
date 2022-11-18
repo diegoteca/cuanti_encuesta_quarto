@@ -1,1 +1,0 @@
-{"height":381.95302843016068,"width":618.0,"size_behavior":0,"conditions":[[1,"Warning: `stat(index)` was deprecated in ggplot2 3.4.0.\nPlease use `after_stat(index)` instead."],[1,"Warning: ggrepel: 7 unlabeled data points (too many overlaps). Consider increasing max.overlaps"]]}

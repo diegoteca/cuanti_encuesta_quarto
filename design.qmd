@@ -38,7 +38,7 @@ El cuestionario por ahora cuenta con los siguientes módulos:
 
 14. Redes sociales entre estudiantes de la materia
 
-Claramente no parece haber mucha relación entre los diferentes módulos. A diferencia de algunas encuestas ómnibus en donde este problema se presenta porque cada investigador que forma parte de la investigación agrega su propio "paquete de preguntas" para su particular investigación en este caso la justificación es que cada módulo tiene una función pedagógica particular.[^1]
+Claramente no parece haber mucha relación entre los diferentes módulos. A diferencia de algunas encuestas ómnibus en donde este problema se presenta porque cada investigador que forma parte de la investigación agrega su propio "paquete de preguntas" para su particular investigación en este caso la justificación es que cada módulo tiene una función pedagógica particular.[^design-1]
 
 ## Diseño de la selección de casos
 
@@ -52,4 +52,4 @@ Antes que nada, si bien es una encuesta que potencialmente les llega a todos los
 
 -   Los estudiantes del sistema universitario nacional
 
-[^1]: En una investigación ómnibus varios investigadores (o clientes) comparten el mismo diseño de selección de casos y de esa manera, juntos, pueden llegar a más casos ya que entre todos amortizan estos costos que suelen ser grandes en encuestas grandes presenciales. A cambio, más allá de un algunos módulos comunes (p.e. el demográfico), cada investigador o cliente agrega su módulo de particular interés.
+[^design-1]: En una investigación ómnibus varios investigadores (o clientes) comparten el mismo diseño de selección de casos y de esa manera, juntos, pueden llegar a más casos ya que entre todos amortizan estos costos que suelen ser grandes en encuestas grandes presenciales. A cambio, más allá de un algunos módulos comunes (p.e. el demográfico), cada investigador o cliente agrega su módulo de particular interés.

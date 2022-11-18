@@ -13,7 +13,8 @@ La tarea básica de limpieza (*cleaning*) que se hará será el remombre de toda
 ``` rmdnote
 ```
 
-```{r test}
+```{r}
+#| label: librerias
 #| warning: false
 
 # El objetivo de este script es descargar las respuestas del cuestionario
@@ -69,7 +70,9 @@ df_encuesta <- df_encuesta |>
                       genero = identidad_de_genero_autopercibida_en_la_actualidad,
                       fecha_nacimiento = indique_su_fecha_de_nacimiento,
                       estado_civil = actualmente_usted_esta) |>
-               mutate(fecha_nacimiento = dmy(fecha_nacimiento))
+               mutate(fecha_nacimiento = dmy(fecha_nacimiento),
+                      edad = interval(fecha_nacimiento,today()) / years(1)) |>
+              relocate(edad, .after = fecha_nacimiento)
 
 # Módulo Hogar, presencia de padres e hijes ----
 # Recategorizo la variable "hog_convivencia_hijes"
@@ -241,18 +244,23 @@ relocate(c("unaj_ano_lectivo",
 # Recategorizaciones académicas
 
 df_encuesta <- df_encuesta |>
-mutate(unaj_n_materias_aprobadas_10 = case_when(unaj_n_materias_aprobadas == "Entre 1 y 5" ~ "Hasta 10",
-                                    unaj_n_materias_aprobadas == "Entre 6 y 10" ~ "Hasta 10",
-                                    unaj_n_materias_aprobadas == "Entre 11 y 15" ~ "Más de 10",
-                                    unaj_n_materias_aprobadas == "Entre 16 y 20" ~ "Más de 10",
-                                    unaj_n_materias_aprobadas == "Entre 21 y 25" ~ "Más de 10"),
-       unaj_n_materias_aprobadas_15 = case_when(unaj_n_materias_aprobadas == "Entre 1 y 5" ~ "Hasta 15",
-                                    unaj_n_materias_aprobadas == "Entre 6 y 10" ~ "Hasta 15",
-                                    unaj_n_materias_aprobadas == "Entre 11 y 15" ~ "Hasta 15",
-                                    unaj_n_materias_aprobadas == "Entre 16 y 20" ~ "Más de 15",
-                                    unaj_n_materias_aprobadas == "Entre 21 y 25" ~ "Más de 15"))
+mutate(unaj_n_materias_aprobadas_10 = case_when(
+unaj_n_materias_aprobadas == "Entre 1 y 5" ~ "Hasta 10",
+unaj_n_materias_aprobadas == "Entre 6 y 10" ~ "Hasta 10",
+unaj_n_materias_aprobadas == "Entre 11 y 15" ~ "Más de 10",
+unaj_n_materias_aprobadas == "Entre 16 y 20" ~ "Más de 10",
+unaj_n_materias_aprobadas == "Entre 21 y 25" ~ "Más de 10"),
+unaj_n_materias_aprobadas_15 = case_when(
+unaj_n_materias_aprobadas == "Entre 1 y 5" ~ "Hasta 15",
+unaj_n_materias_aprobadas == "Entre 6 y 10" ~ "Hasta 15",
+unaj_n_materias_aprobadas == "Entre 11 y 15" ~ "Hasta 15",
+unaj_n_materias_aprobadas == "Entre 16 y 20" ~ "Más de 15",
+unaj_n_materias_aprobadas == "Entre 21 y 25" ~ "Más de 15"),
+unaj_periodo_lectivo_num = case_when(
+unaj_periodo_lectivo == "Primer Cuatrimestre" ~ 1,
+unaj_periodo_lectivo == "Segundo Cuatrimestre" ~ 2))
 
-# Módulo materia Metodolog?a Cuantitativa
+# Módulo materia Metodología Cuantitativa
 
 df_encuesta <- df_encuesta |>
 rename(
