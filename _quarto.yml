@@ -15,7 +15,8 @@ book:
     - references.qmd
 
 bibliography: [bibliography.bib]
-csl: chicago-authordate-bibliography.csl
+#csl: chicago-author-date.csl 
+
 
 format:
   html:

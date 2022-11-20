@@ -82,5 +82,12 @@
     "title": "2  Limpieza y consistencia de los datos",
     "section": "2.1 Limpieza",
     "text": "2.1 Limpieza\nLa idea de limpieza (cleaning) viene de usar la metáfora de dato sucio (dirty). Un dato sucio no necesariamente es un dato incorrecto aunque sí se trata de un tipo de dato incómodo ya que dificulta el posterior análisis.\nLa tarea básica de limpieza (cleaning) que se hará será el remombre de todas las variables. La razón de esta operación es que, al menos si se trabaja con google forms, los nombres de las variables son el texto de la propia pregunta del formulario. Esto incomoda un poco el análisis de los datos por la gran extensión de algunas preguntas y por lo problemático que a veces puede ser tener espacios en blanco en los nombres de las variables."
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "Referencias bibliográficas",
+    "section": "",
+    "text": "Galtung, Johan. 1973. Teoría y Método de La Investigación\nSocial. Vol. I. Buenos Aires: Eudeba.\n\n\nScott, John. 2017. Social Network Analysis. 4th ed. London:\nSage Publications."
   }
 ]

@@ -1,7 +1,72 @@
 {
-    "sources": [],
+    "sources": [
+        {
+            "URL": "http://yihui.org/knitr/",
+            "author": [
+                {
+                    "family": "Xie",
+                    "given": "Yihui"
+                }
+            ],
+            "edition": "2nd",
+            "id": "xie2015",
+            "issued": {
+                "date-parts": [
+                    [
+                        2015
+                    ]
+                ]
+            },
+            "note": "ISBN 978-1498716963",
+            "publisher": "Chapman; Hall/CRC",
+            "publisher-place": "Boca Raton, Florida",
+            "title": "Dynamic documents with R and knitr",
+            "type": "book"
+        },
+        {
+            "author": [
+                {
+                    "family": "Galtung",
+                    "given": "Johan"
+                }
+            ],
+            "id": "galtung1973",
+            "issued": {
+                "date-parts": [
+                    [
+                        1973
+                    ]
+                ]
+            },
+            "publisher": "Eudeba",
+            "publisher-place": "Buenos Aires",
+            "title": "Teoría y método de la investigación social",
+            "type": "book",
+            "volume": "I"
+        },
+        {
+            "author": [
+                {
+                    "family": "Scott",
+                    "given": "John"
+                }
+            ],
+            "edition": "4th",
+            "id": "scott2017",
+            "issued": {
+                "date-parts": [
+                    [
+                        2017
+                    ]
+                ]
+            },
+            "publisher": "Sage Publications",
+            "publisher-place": "London",
+            "title": "Social network analysis",
+            "type": "book"
+        }
+    ],
     "project_biblios": [
-        "book.bib",
-        "packages.bib"
+        "bibliography.bib"
     ]
 }
