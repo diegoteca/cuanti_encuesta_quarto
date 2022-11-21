@@ -64,6 +64,27 @@
             "publisher-place": "London",
             "title": "Social network analysis",
             "type": "book"
+        },
+        {
+            "author": [
+                {
+                    "family": "Euler",
+                    "given": "Leonard"
+                }
+            ],
+            "container-title": "Commentarii academiae scientiarum Petropolitanae",
+            "id": "euler1741",
+            "issued": {
+                "date-parts": [
+                    [
+                        1741
+                    ]
+                ]
+            },
+            "page": "128-140",
+            "title": "Solutio problematis ad geometriam situs pertinentis",
+            "type": "article-journal",
+            "volume": "8"
         }
     ],
     "project_biblios": [

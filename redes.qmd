@@ -8,6 +8,7 @@ library(ggraph)
 library(stringr)
 library(tidyverse)
 library(here)
+library(gt)
            
 ```
 
@@ -133,7 +134,7 @@ El análisis de redes (*Network Analysis* o *NA*) es un enfoque que tiene una la
 ::: {.callout-note collapse="true"}
 ## Sabías qué? Análisis de redes y matemática
 
-El análisis de redes en general y el análisis de redes sociales en particular puede considerarse como una aplicación de una teoría matemática abstracta como es la [teoría de grafos](https://es.wikipedia.org/wiki/Teor%C3%ADa_de_grafos) (*Graph Theory*). Esta última se origina en un [clásico artículo](https://drive.google.com/file/d/1Vr1BQT-7GAK9ia5YbMfYul4Lwzhv3LVP/view) de Leonard Euler de 1736 conocido como los [Los siete puentes de Königsberg](https://es.wikipedia.org/wiki/Problema_de_los_puentes_de_K%C3%B6nigsberg). El problema consistía en encontrar un recorrido para cruzar a pie toda la ciudad pasando sólo una vez por cada uno de los puentes y regresando al mismo punto de inicio.
+El análisis de redes en general y el análisis de redes sociales en particular puede considerarse como una aplicación de una teoría matemática abstracta como es la [teoría de grafos](https://es.wikipedia.org/wiki/Teor%C3%ADa_de_grafos) (*Graph Theory*). Esta última se origina en un [clásico artículo](https://drive.google.com/file/d/1Vr1BQT-7GAK9ia5YbMfYul4Lwzhv3LVP/view) de Leonard Euler de 1741 en donde trata el conocido problema de [los siete puentes de Königsberg](https://es.wikipedia.org/wiki/Problema_de_los_puentes_de_K%C3%B6nigsberg) \[@euler1741\]. El problema consiste en encontrar un recorrido para cruzar a pie toda la ciudad pasando sólo una vez por cada uno de los puentes y regresando al mismo punto de inicio.
 
 ![](_book/Inputs/Images/euler_article.png){fig-align="center"}
 :::
@@ -144,7 +145,20 @@ Recién luego de varias décadas la visualización del sociograma se relacionó 
 
 ### Centralidades de los estudiantes y sus relaciones
 
-En un grafo, los nodos (*nodes*) representan a los entes relacionados (aquí estudiantes) y las líneas o aristas (*edges*) representan a las relaciones entre ellos. En este sentido, el SNA permite calcular una serie de medidas tanto para los nodos como para sus relaciones. En este caso primero vamos a calcular una medida de centralidad de los **nodos** en función de las relaciones que cada uno tiene y con quién. En este sentido, no es lo mismo conocer a 5 personas que son pocos conocidos que conocer a 5 personas que son muy conocidas por otros. En el casos de las relaciones (o aristas) vamos a calcular otra medida de centralidad basada en la idea de intermediación .[^redes-1]
+```{r}
+#| label: periodo
+
+periodo_analisis <- df_encuesta |>
+summarise(unaj_comision = str_c(max(unaj_ano_lectivo), 
+                                max(unaj_periodo_lectivo), 
+                                sep = " - ")) |>
+pull()
+
+```
+
+En un grafo, los nodos (*nodes*) representan a los entes relacionados (aquí estudiantes) y las líneas o aristas (*edges*) representan a las relaciones entre ellos. En este sentido, el SNA contiene una serie de conceptos cuantitativos que tienen como insumo la cantidad y calidad de las relaciones. Algunos de esos conceptos con aplicables para cada nodo (p.e. estudiantes), otros son aplicables para el conjunto de ellos (p.e. comisiones).
+
+En el siguiente gráfico (o grafo más precisamente) se puede observar los estudiantes del último cuatrimestre (`r periodo_analisis`) y las relaciones sobre quien conoce a quien al principio de la cursada.
 
 ```{r}
 #| label: net_last
@@ -157,9 +171,13 @@ net_last <- net |>
 activate(nodes) |>
 filter(unaj_ano_lectivo == max(unaj_ano_lectivo)) |>
 filter(unaj_periodo_lectivo_num == max(unaj_periodo_lectivo_num)) |>
-mutate(node_pagerank = centrality_pagerank(),
-       node_centrality_betw = centrality_betweenness(),
-       node_centrality_degree = centrality_degree(),
+mutate(node_centrality_influence = centrality_eigen(
+                      directed = TRUE),
+       node_centrality_betw = centrality_betweenness(
+                              normalized = TRUE),
+       node_centrality_degree = centrality_degree(
+                                mode = "in",
+                                loops = F,),
        siglas = str_sub(redes_tu_nombre, start = 1L, end = 5L),
        node_comunidad = as.factor(group_components())) |>
 activate(edges) |>
@@ -186,6 +204,7 @@ select(redes_tu_nombre,
        redes_4_contacto,
        redes_5_contacto,
        siglas,
+       node_centrality_influence,
        node_centrality_betw,
        node_centrality_degree,
        cuanti_docente_siglas) |>
@@ -203,15 +222,15 @@ as_tibble()
 #| echo: false
 #| warning: false
 #| output: true
-#| fig.width: 7
+#| fig.width: 9
 #| fig.height: 7
 
 # No uso geom_edge_link porque algunas elecciones son bidireccionales
 # geom_link_fun parece más apropiado
 
 graph_last <- ggraph(net_last, layout = "kk") +
-geom_edge_fan(aes(),
-              alpha = 0.4) + 
+geom_edge_fan(aes(check_overlap = TRUE,
+                  alpha = edge_centrality_betw)) + 
 geom_node_point(aes(fill = cuanti_docente_siglas,
                     size = node_centrality_degree),
                     shape = 21) +
@@ -220,12 +239,18 @@ geom_node_text(aes(label = siglas),
                repel = TRUE,
                alpha = 0.7) +
 scale_color_continuous(guide = 'legend') +
-theme_graph() +
 labs(
 title = "Quien conoce a quien?",
 subtitle = "Estudiantes del ultimo cuatrimestre",
+edge_alpha = "Grado de intermediación",
 fill = "Comisiones",
-size = "Grado de centralidad")
+size = "Grado de centralidad") +
+theme_graph() +
+theme(legend.key.size = unit(10, 'cm'), #change legend key size
+      legend.key.height = unit(1, 'cm'), #change legend key height
+      legend.key.width = unit(1, 'cm'), #change legend key width
+      legend.title = element_text(size = 14), #change legend title font size
+      legend.text = element_text(size = 14)) #change legend text font size
 
 graph_last
 
@@ -235,6 +260,40 @@ ggsave(here("Outputs", "graph_last.png"))
 # http://users.dimi.uniud.it/~massimo.franceschet/ns/syllabus/make/tidygraph/tidygraph.html
 ```
 
+En este caso, las relaciones se visualizan con líneas. Estas pueden ser tanto relaciones entrantes ("me conocen a mí") o salientes ("yo conozco a"). Para facilitar la visualización el tamaño de cada estudiante es proporcional a la cantidad de relaciones entrantes que podría considerarse como un indicador grueso de popularidad. En el contexto del SNA este concepto se denomina grado de centralidad (*centrality degree*).
+
+Otro concepto importante del SNA es el de la intermediación (*betweeness centrality*). Este puede calcularse tanto para nodos como para las relaciones. En efecto, en el gráfico anterior se visualizó el valor de este concepto para las relaciones ("grado de intermediación"). El criterio que determina el valor es el número de caminos más cortos que pasan a través de ese nodo o relación. La idea de camino más corto es un concepto fuerte del SNA y hace referencia a cual es el "camino" más corto entre un nodo (o relación) y otro nodo (u otra relación) teniendo en cuenta las relaciones existentes. Por ejemplo, hay personas que no son necesariamente populares pero ocupan una posición ventajosa en la red social porque ellos tienen una información que les puede servir a otros. Pensemos en la típica situación en donde necesitamos pedirle un favor a alguien popular pero la unica manera de acceder a él es a través de su secretaria/o. Este última/o puede no ser popular pero tiene un nivel alto de intermediación.
+
+Por último, aplicaremos un concepto del SNA que, intuitivamente, remite a la idea de influencia. Aquí el criterio de esta centralidad es que aquellos nodos que están conectados con otros nodos que, a su turno, están conectados con otros ... tienen más influencia que aquellos que están conectados con otros nodos pero que, a su turno, estos no están conectados con nadie. En este sentido, no es lo mismo conocer a 5 personas que son pocos conocidos que conocer a 5 personas que son muy conocidas por otros. Esta es la diferencia principal entre alguien "popular" y un "influencer". Ejemplo de conceptos del SNA que se acercan a esta intuición pueden considerarse la centralidad del vector propio (*eigenvector centrality),* la centralidad que se usa en el rankeo de las páginas de google (google page rank) y la centralidad de Katz (*katz centralit*y). Aquí sólo calcularemos la centralidad del propio vector.
+
+```{r}
+#| label: tb_nodos
+
+tb_nodos <- net_last |>
+activate(nodes) |>
+as_tibble() |>
+select(siglas,
+       node_centrality_degree,
+       node_centrality_betw,
+       node_centrality_influence) |>
+arrange(desc(node_centrality_degree)) |>
+slice(1:10) |>
+gt() |>
+cols_label(
+siglas = "Estudiante",
+node_centrality_degree = "G. centralidad",
+node_centrality_betw = "G. intermediación",
+node_centrality_influence = "G. de influencia") |>
+fmt_number(c(node_centrality_betw,
+             node_centrality_influence),
+           decimals = 2)
+
+tb_nodos
+
+```
+
+Como puede observarse en la tabla anterior (sólo se muestran los 10 casos con mayor grado de centralidad), los valores de los diferentes conceptos algunas veces son similares y otras veces no. Esto es razonable ya que cada concepto utiliza un criterio diferente de centralidad. Dada la pluralidad de conceptos de centralidad que existen en el SNA siempre es conveniente explicitar con cual se está trabajando.
+
 ```{r}
 #| label: community_diego
 #| echo: false
@@ -243,8 +302,10 @@ ggsave(here("Outputs", "graph_last.png"))
 #| include: false
 
 comunnity_last <- ggraph(net_last, layout = "kk") + 
-  geom_edge_link(aes(alpha = stat(index)), show.legend = FALSE) + 
-  geom_node_point(aes(colour = node_comunidad), size = 5) +
+  geom_edge_fan(aes(alpha = stat(index)), 
+                show.legend = FALSE) + 
+  geom_node_point(aes(colour = node_comunidad), 
+                      size = 5) +
   geom_node_text(aes(label = siglas), repel = TRUE) +
   theme_graph(foreground = 'steelblue', 
               fg_text_colour = 'white', 
@@ -252,6 +313,5 @@ comunnity_last <- ggraph(net_last, layout = "kk") +
  
 comunnity_last
 
+ggsave(here("Outputs", "comunnity_last.png"))
 ```
-
-[^redes-1]: Estrictamente existen múltiples medidas de centralidad. Aquí, para el caso de los nodos se calculó el *pagerank* que es similar al que utiliza google para ordenar las páginas en las búsquedas. En el caso de las relaciones se calculó una medida de centralidad basada en la intermediación (*betweenness*), que tiene en cuenta el número de caminos más cortos que pasan por una relación en un grafo.
