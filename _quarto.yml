@@ -16,7 +16,8 @@ book:
 
 bibliography: [bibliography.bib]
 #csl: chicago-author-date.csl 
-
+# Esta es la opcion csl (citattion style) que viene por defecto
+# Por ahora hay problemas con el path de un csl alternativo
 
 format:
   html:

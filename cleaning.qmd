@@ -261,13 +261,30 @@ unaj_periodo_lectivo == "Primer Cuatrimestre" ~ 1,
 unaj_periodo_lectivo == "Segundo Cuatrimestre" ~ 2))
 
 # Módulo materia Metodología Cuantitativa
+# Identifico con siglas a los docentes para luego identificar comisiones
 
 df_encuesta <- df_encuesta |>
 rename(
 cuanti_docente = indica_el_docente_de_tu_comision,
 cuanti_1_palabra = primer_palabra,
 cuanti_2_palabra = segunda_palabra,
-cuanti_3_palabra = tercera_palabra)
+cuanti_3_palabra = tercera_palabra) |>
+mutate(cuanti_docente_siglas = case_when(
+cuanti_docente == "Diego Quartulli" ~ "Diego",
+cuanti_docente == "Sabrina Iacobellis" ~ "Sabri",
+cuanti_docente == "Martín Bageneta" ~ "Martín",
+cuanti_docente == "Nayla Pisani" ~ "Nayla"))
+
+# Se crea una variable que identifique a la comision
+# Lo hago después que construí cuanti_docente_siglas
+
+df_encuesta <- df_encuesta |>
+mutate(unaj_comision = str_c(unaj_ano_lectivo, 
+                             unaj_periodo_lectivo, 
+                             cuanti_docente_siglas, 
+                             sep = "-"),
+       unaj_comision = as_factor(unaj_comision)) |>
+relocate(unaj_comision, .after = unaj_periodo_lectivo)
 
 # Módulo Redes Sociales
 

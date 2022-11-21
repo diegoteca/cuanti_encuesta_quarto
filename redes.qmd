@@ -91,16 +91,17 @@ redes_4_contacto,
 redes_5_contacto),
 names_to = "orden_del_contacto",
 values_to = "to") |>
-mutate(intensidad_relacion = as.integer(case_when(
+mutate(intensidad_relacion = as.integer(case_when( #El más cercano 1 / Más lejano 5
 orden_del_contacto == "redes_1_contacto" ~ "1",
 orden_del_contacto == "redes_2_contacto" ~ "2",
 orden_del_contacto == "redes_3_contacto" ~ "3",
 orden_del_contacto == "redes_4_contacto" ~ "4",
 orden_del_contacto == "redes_5_contacto" ~ "5"))) |>
-select(!c(mail, orden_del_contacto)) |>
+select(!c(mail)) |>
 semi_join(nodes, by = c("to" = "redes_tu_nombre")) |>
 rename(from = redes_tu_nombre) |>
-relocate(to)
+relocate(c(to,orden_del_contacto, intensidad_relacion), .after = from)
+
           
 ```
 
@@ -115,11 +116,19 @@ net <- tbl_graph(nodes = nodes,
                  directed = TRUE)
 
 # se puede agregar "directed = TRUE" pero algunas medidas de comunidad no se pueden calcular
+
+# Para tener a mano
+
+net_nodes <- net |>
+activate(nodes) |>
+as_tibble()
+
+net_edges <- net |>
+activate(edges) |>
+as_tibble()
 ```
 
-El análisis de redes (*Network Analysis* o NA) es un enfoque que tiene una larga historia dentro de las ciencias en general.
-
-En el caso más particular del [Análisis de Redes Sociales](https://es.wikipedia.org/wiki/An%C3%A1lisis_de_redes#An%C3%A1lisis_de_Redes_Sociales) (Social *Network Analysis* o SNA) su origen tiene 2 patas diferenciadas. Por un lado, tuvo que ver con la invención del [sociograma](https://es.wikipedia.org/wiki/Sociograma), el cual, a su turno, tuvo que ver con el origen de la [sociometría](https://es.wikipedia.org/wiki/Sociometr%C3%ADa). El sociograma es una herramienta de visualización de las relaciones sociales que conforman un grupo. Para su construcción se requiere de datos de todos los miembros de ese grupo por lo que su utilización muchas veces se restringue a grupos o organizaciones pequeños. En parte por lo anterior, no son muchas las investigaciones empíricas que lo utilizan dada la dificultad metodológica de obtener esos datos.
+El análisis de redes (*Network Analysis* o *NA*) es un enfoque que tiene una larga historia dentro de las ciencias en general. En el caso más particular del [Análisis de Redes Sociales](https://es.wikipedia.org/wiki/An%C3%A1lisis_de_redes#An%C3%A1lisis_de_Redes_Sociales) (Social *Network Analysis* o *SNA*) su origen tiene 2 patas diferenciadas. Por un lado, tuvo que ver con la invención del [sociograma](https://es.wikipedia.org/wiki/Sociograma), el cual, a su turno, tuvo que ver con el origen de la [sociometría](https://es.wikipedia.org/wiki/Sociometr%C3%ADa). El sociograma es una herramienta de visualización de las relaciones sociales que conforman un grupo. Para su construcción se requiere de datos de todos los miembros de ese grupo por lo que su utilización muchas veces se restringue a grupos o organizaciones pequeños. En parte por lo anterior, no son muchas las investigaciones empíricas que lo utilizan dada la dificultad metodológica de obtener esos datos.
 
 ::: {.callout-note collapse="true"}
 ## Sabías qué? Análisis de redes y matemática
@@ -129,62 +138,101 @@ El análisis de redes en general y el análisis de redes sociales en particular 
 ![](_book/Inputs/Images/euler_article.png){fig-align="center"}
 :::
 
-Recién luego de varias décadas la visualización del sociograma se relacionó explícitamente con la teoría de grafos, dando origen al SNA. Si los sociogramas tenían la dificultad metodológica de su construcción, con la incorporación de la teoría de grafos se sumó la dificultad metodológica del análisis de esos datos. Estas 2 condiciones afectan mucho el grado de difusión de este enfoque. En parte por lo anterior, en lo que sigue se mostrará como se pueden hacer análisis y visualizaciones de redes con datos provenientes de una base original de casos x columnas.
+Recién luego de varias décadas la visualización del sociograma se relacionó explícitamente con la teoría de grafos, dando origen al SNA. Si los sociogramas tenían la dificultad metodológica de su construcción, con la incorporación de la teoría de grafos se sumó la dificultad metodológica del análisis de esos datos. Estas 2 condiciones todavía afectan mucho el grado de difusión de este enfoque, aunque en la actualidad tanto la huella digital contenida en la redes sociales virtuales (facebook, twitter, etc.) como la emergencia de programas informáticos que facilitan el análisis ha favorecido una mayor difusión. En parte por lo anterior, en lo que sigue se mostrará como se pueden hacer análisis y visualizaciones de redes con datos provenientes de una base original de casos x columnas.
 
 ## Análisis y visualizaciones
 
 ### Centralidades de los estudiantes y sus relaciones
 
-En un grafo, los nodos (*nodes*) representan a los entes relacionados (aquí estudiantes) y las líneas (*edges*) representan a las relaciones entre ellos. En este caso primero vamos a calcular una medida de centralidad de los nodos en función de las relaciones que cada uno tiene y con quién. En este sentido, no es lo mismo conocer a 5 personas que son pocos conocidos que conocer a 5 personas que son muy conocidas por otros. En el casos de las relaciones vamos a calcular otra medida de centralidad basada en la idea de intermediación .[^redes-1]
+En un grafo, los nodos (*nodes*) representan a los entes relacionados (aquí estudiantes) y las líneas o aristas (*edges*) representan a las relaciones entre ellos. En este sentido, el SNA permite calcular una serie de medidas tanto para los nodos como para sus relaciones. En este caso primero vamos a calcular una medida de centralidad de los **nodos** en función de las relaciones que cada uno tiene y con quién. En este sentido, no es lo mismo conocer a 5 personas que son pocos conocidos que conocer a 5 personas que son muy conocidas por otros. En el casos de las relaciones (o aristas) vamos a calcular otra medida de centralidad basada en la idea de intermediación .[^redes-1]
 
 ```{r}
-#| label: net_diego
+#| label: net_last
 
 # Se programa para siempre realizar el análisis sobre la última cursada
+# Pongo a todos los que se inscribieron porque quizá en una comisión son pocos
+# y pocos se conocen.
 
-net_diego <- net |>
+net_last <- net |>
 activate(nodes) |>
-filter(cuanti_docente == "Diego Quartulli") |>
 filter(unaj_ano_lectivo == max(unaj_ano_lectivo)) |>
 filter(unaj_periodo_lectivo_num == max(unaj_periodo_lectivo_num)) |>
 mutate(node_pagerank = centrality_pagerank(),
        node_centrality_betw = centrality_betweenness(),
+       node_centrality_degree = centrality_degree(),
        siglas = str_sub(redes_tu_nombre, start = 1L, end = 5L),
        node_comunidad = as.factor(group_components())) |>
 activate(edges) |>
 mutate(edge_centrality_betw = centrality_edge_betweenness())
+
+
+
 ```
 
 ```{r}
-#| label: graph_diego
+#| label: net_last_nodes_&_edges
 #| echo: false
 #| warning: false
 #| output: true
 
-graph_diego <- ggraph(net_diego, layout = "kk") +
-geom_edge_link(aes(alpha = edge_centrality_betw)) + 
-geom_node_point(aes(size = node_pagerank, 
-                    colour = node_pagerank)) +
+# Sirve para chequear
+
+net_last_nodes <- net_last |>
+activate(nodes) |>
+select(redes_tu_nombre,
+       redes_1_contacto,
+       redes_2_contacto,
+       redes_3_contacto,
+       redes_4_contacto,
+       redes_5_contacto,
+       siglas,
+       node_centrality_betw,
+       node_centrality_degree,
+       cuanti_docente_siglas) |>
+as_tibble()
+
+net_last_edges <- net_last |>
+activate(edges) |>
+as_tibble()
+
+
+```
+
+```{r}
+#| label: graph_last
+#| echo: false
+#| warning: false
+#| output: true
+#| fig.width: 7
+#| fig.height: 7
+
+# No uso geom_edge_link porque algunas elecciones son bidireccionales
+# geom_link_fun parece más apropiado
+
+graph_last <- ggraph(net_last, layout = "kk") +
+geom_edge_fan(aes(),
+              alpha = 0.4) + 
+geom_node_point(aes(fill = cuanti_docente_siglas,
+                    size = node_centrality_degree),
+                    shape = 21) +
+geom_node_text(aes(label = siglas), 
+               check_overlap = TRUE,
+               repel = TRUE,
+               alpha = 0.7) +
 scale_color_continuous(guide = 'legend') +
-theme_graph()
+theme_graph() +
+labs(
+title = "Quien conoce a quien?",
+subtitle = "Estudiantes del ultimo cuatrimestre",
+fill = "Comisiones",
+size = "Grado de centralidad")
 
-graph_diego
+graph_last
 
-ggsave(here("Outputs", "graph_diego.png"))
+ggsave(here("Outputs", "graph_last.png"))
 
 # En este link hay varias buenas opciones de gráficos
 # http://users.dimi.uniud.it/~massimo.franceschet/ns/syllabus/make/tidygraph/tidygraph.html
-```
-
-```{r}
-#| label: net_nodes
-#| echo: false
-#| warning: false
-#| output: true
-
-nodos <- net_diego |>
-activate(nodes) |>
-as_tibble()
 ```
 
 ```{r}
@@ -192,16 +240,17 @@ as_tibble()
 #| echo: false
 #| warning: false
 #| output: true
+#| include: false
 
-comunnity_diego <- ggraph(net_diego, layout = "kk") + 
+comunnity_last <- ggraph(net_last, layout = "kk") + 
   geom_edge_link(aes(alpha = stat(index)), show.legend = FALSE) + 
   geom_node_point(aes(colour = node_comunidad), size = 5) +
-  geom_node_text(aes(label = siglas), repel = TRUE)
+  geom_node_text(aes(label = siglas), repel = TRUE) +
   theme_graph(foreground = 'steelblue', 
               fg_text_colour = 'white', 
               base_family = 'Helvetica')
  
-comunnity_diego
+comunnity_last
 
 ```
 
