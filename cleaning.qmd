@@ -8,10 +8,15 @@ En esta sección veremos algunos ejemplos tanto de limpieza, consistencia y cons
 
 La idea de limpieza (*cleaning*) viene de usar la metáfora de dato sucio (*dirty*). Un dato sucio no necesariamente es un dato incorrecto aunque sí se trata de un tipo de dato más incómodo de trabajar ya que dificulta el posterior análisis.
 
-La tarea básica de limpieza (*cleaning*) que aquí se hará será el remombre de todas las variables. La razón de esta operación es que, al menos si se trabaja con google forms (aunque lo mismo suele suceder con otros sistemas de formularios online), los nombres de las variables son el texto de la propia pregunta del formulario. Esto incomoda un poco el análisis de los datos por la gran extensión de algunas preguntas y esa incomodidad se traduce en una mayor propensión al error.
+La tarea básica de limpieza (*cleaning*) que aquí se hará será el remombre de todas las variables. La razón de esta operación es que, al menos si se trabaja con google forms (aunque algo similar suele suceder con otros sistemas de formularios online), los nombres de las variables son el texto de la propia pregunta del formulario. Esto incomoda un poco el análisis de los datos por la gran extensión de algunas preguntas y esa incomodidad se traduce en una mayor propensión al error. En este sentido para trabajar con los nombres de las variables suele ser recomendable:
 
-``` rmdnote
-```
+-    Eliminar los espacios entre las palabras agregando algún símbolo que las una ("\_", "-" o cualquier otro),
+
+-   Pasar todas las letras a minúscula (o mayúscula)
+
+-   Renombrar el nombre original con un nombre más corto y recordable. Una opción recomendable es que cuando en la encuesta haya variables que corresponde a un mismo módulo (p.e. módulo vivienda) se inicien por un mismo prefijo (viv_habitaciones, viv_inodoro, etc.).
+
+    Otra tarea diferente pero relacionada con la anterior tiene que ver con el orden de las variables en la base de datos. En algunos sistemas el orden de las variables tiene que ver con el orden cronológico en que se fueron construyendo las preguntas (p.e. en una encuesta) o con el orden en que luego se fueron construyendo variables complejas o recategoriaciones. En cualquier caso, lo que se debe tratar de lograr es que las variables que tienen relación temática entre sí, no sólo tengan un prefijo que las una sino que se encuentren visualmente cercanas en la base de datos. Esta recomendación es más importante cuanto más variables tenga la base de datos.
 
 ```{r}
 #| label: librerias
@@ -50,6 +55,7 @@ drive_download(url,
                overwrite = TRUE)
 
 # Leo el archivo online y comienzo la corrección de los nombres de las variables
+# Se va haciendo por módulo
                     
 df_encuesta <- read_xlsx(here("Inputs", "descarga_original.xlsx")) |>
                clean_names()
@@ -57,11 +63,12 @@ df_encuesta <- read_xlsx(here("Inputs", "descarga_original.xlsx")) |>
 # Módulo Identificación ----
 
 df_encuesta <- df_encuesta |>
-               rename(dni = por_favor_podrias_ingresar_tu_dni,
-                      mail = direccion_de_correo_electronico) |>
-               relocate(marca_temporal, .after = last_col()) |>
-               relocate(dni) |>
-               mutate(dni = as.integer(dni))
+rename(
+dni = por_favor_podrias_ingresar_tu_dni,
+mail = direccion_de_correo_electronico) |>
+relocate(marca_temporal, .after = last_col()) |>
+relocate(dni) |>
+mutate(dni = as.integer(dni))
 
 # Módulo Demográfico Individual ----
 
@@ -86,12 +93,13 @@ hog_convivencia_hijes = actualmente_tiene_hijes_conviviendo_con_usted)
 # Módulo Cuidados del hogar. Niñes y adultos mayores
 
 df_encuesta <- df_encuesta |>
-rename(hog_n_menores_6 = de_esos_hijes_cuantos_tienen_menos_de_6_anos,
-       hog_dificultad_cuidados_menores_6 = habitualmente_tienen_dificultades_para_organizar_las_tareas_de_cuidado_de_sus_hijes,
-       hog_principal_dificultad_menores_6 = cuales_es_la_principal_dificultad_que_tienen_para_cuidar_a_les_nines_menores_de_6_anos,
-       hog_mayores_60 = actualmente_usted_tiene_adultos_mayores_mayores_de_60_anos_conviviendo_con_usted,
-       hog_dificultad_cuidados_mayores_60 = habitualmente_tienen_dificultades_para_organizar_las_tareas_de_cuidado_de_personas_adultas_mayores,
-       hog_principal_dificultad_mayores_60 = cuales_es_la_principal_dificultad_que_tienen_para_cuidar_a_los_adultos_mayores)
+rename(
+hog_n_menores_6 = de_esos_hijes_cuantos_tienen_menos_de_6_anos,
+hog_dificultad_cuidados_menores_6 = habitualmente_tienen_dificultades_para_organizar_las_tareas_de_cuidado_de_sus_hijes,
+hog_principal_dificultad_menores_6 = cuales_es_la_principal_dificultad_que_tienen_para_cuidar_a_les_nines_menores_de_6_anos,
+hog_mayores_60 = actualmente_usted_tiene_adultos_mayores_mayores_de_60_anos_conviviendo_con_usted,
+hog_dificultad_cuidados_mayores_60 = habitualmente_tienen_dificultades_para_organizar_las_tareas_de_cuidado_de_personas_adultas_mayores,
+hog_principal_dificultad_mayores_60 = cuales_es_la_principal_dificultad_que_tienen_para_cuidar_a_los_adultos_mayores)
 
 # Módulo Vivienda
 
