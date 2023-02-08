@@ -3,7 +3,7 @@ project:
 
 book:
   title: "Informe Encuesta Metodología y Técnicas Cuantitativas"
-  author: "Diego Armando Datos"
+  author: "Metodología Cuantitativa"
   date: now
   chapters:
     - index.qmd

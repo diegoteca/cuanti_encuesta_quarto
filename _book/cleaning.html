@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+<meta name="generator" content="quarto-1.2.335">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -4023,12 +4023,12 @@ vertical-align: -.125em;
 
 </header>
 
-<p>El producto de los procesos de producción y registro de los datos es, precisamente, un dato. Este dato puede (y suele) contener diferentes tipos de errores por lo que se considera una buena práctica realizar un proceso de limpieza y preparación para recién después comenzar el proceso estricto del análisis de los datos.</p>
-<p>En esta sección veremos algunos ejemplos tanto de limpieza, consistencia y construcción de nuevas variables. Aquí veremos ejemplos de los casos mas sencillos. Procesos como el pegado (<em>joint</em>) de variables, necesario cuando los datos se encuentran en diferentes archivos, no se verán.</p>
+<p>El producto de los procesos de producción y registro de los datos suele cristalizarce en una (o varias) bases de datos. Estas pueden (y suelen) contener diferentes tipos de errores por lo que se considera una buena práctica realizar un proceso de limpieza y preparación para recién después comenzar el proceso estricto del análisis de los mismas.</p>
+<p>En esta sección veremos algunos ejemplos tanto de limpieza, consistencia y construcción de nuevas variables. Aquí veremos ejemplos de los casos mas sencillos. Procesos como el pegado (<em>joint</em>) de variables, necesario cuando los datos se encuentran en diferentes archivos, no se verán aquí.</p>
 <section id="limpieza" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="limpieza"><span class="header-section-number">2.1</span> Limpieza</h2>
-<p>La idea de limpieza (<em>cleaning</em>) viene de usar la metáfora de dato sucio (<em>dirty</em>). Un dato sucio no necesariamente es un dato incorrecto aunque sí se trata de un tipo de dato incómodo ya que dificulta el posterior análisis.</p>
-<p>La tarea básica de limpieza (<em>cleaning</em>) que se hará será el remombre de todas las variables. La razón de esta operación es que, al menos si se trabaja con google forms, los nombres de las variables son el texto de la propia pregunta del formulario. Esto incomoda un poco el análisis de los datos por la gran extensión de algunas preguntas y por lo problemático que a veces puede ser tener espacios en blanco en los nombres de las variables.</p>
+<p>La idea de limpieza (<em>cleaning</em>) viene de usar la metáfora de dato sucio (<em>dirty</em>). Un dato sucio no necesariamente es un dato incorrecto aunque sí se trata de un tipo de dato más incómodo de trabajar ya que dificulta el posterior análisis.</p>
+<p>La tarea básica de limpieza (<em>cleaning</em>) que aquí se hará será el remombre de todas las variables. La razón de esta operación es que, al menos si se trabaja con google forms (aunque lo mismo suele suceder con otros sistemas de formularios online), los nombres de las variables son el texto de la propia pregunta del formulario. Esto incomoda un poco el análisis de los datos por la gran extensión de algunas preguntas y esa incomodidad se traduce en una mayor propensión al error.</p>
 <pre class="rmdnote"><code></code></pre>
 <div class="cell">
 

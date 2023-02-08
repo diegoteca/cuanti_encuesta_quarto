@@ -1,0 +1,3 @@
+# Complementación con fuentes secundarias
+
+Uno de los objetivos de la materia es, sin duda, aportar herramientas que permitan la producción de un dato primario de calidad. Sin embargo, también es cierto que una de las maneras de agregarle valor a cualquier dato primario es su pertinente combinación con algún otro dato secundario. Por último, especialmente en los casos en donde es inviable la producción de un mejor dato primario o en los casos en donde el dato necesario ya existe en forma de datos secundario, el uso de fuentes secundarias es la mejor opción.

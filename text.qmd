@@ -18,6 +18,8 @@ library(tidyverse)
 df_encuesta <- read_rds(here::here("Outputs", "df_encuesta.rds"))
 ```
 
+## Insumos de la encuesta
+
 El insumo de estos análisis es una serie de preguntas de respuesta abierta. Sin embargo, dado el formato específico de la pregunta se trata de un dato que, si bien no puede considerarse estructurado, se aleja un poco de otros ejemplos de datos no estructurados como los textos provenientes de entrevistas en profundidad, de canciones o de discursos presidenciales.
 
 ![pregunta_texto](Inputs/Images/preguntas_texto.png){width="600"}
@@ -179,6 +181,7 @@ gt_palabras <- conteo_palabras_general |>
 gt_palabras
         
 ```
+
 Como en muchas otras situaciones, lo que se puede mostrar en forma de tabla también se puede graficar con algún tipo de gráfico. En este caso haremos un gráfico de barras con los datos anteriores.
 
 ```{r grafico_conteo}
@@ -276,4 +279,3 @@ filter(!is.na(cuanti_palabras_pre_stem)) |>
  
  nube_palabras_grupo
 ```
-

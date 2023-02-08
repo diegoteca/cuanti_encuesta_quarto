@@ -22,7 +22,7 @@ df_encuesta <- read_rds(here::here("Outputs", "df_encuesta.rds")) |>
                relocate(redes_tu_nombre)
 ```
 
-## Insumo de la encuesta
+## Insumos de la encuesta
 
 El insumo de estos análisis es una serie de preguntas en donde cada estudiante debe elegir, entre todos los estudiantes de ese cuatrimestre, a los 5 a los que más conoce. Como tal este módulo puede considerarse como una serie de preguntas cerradas de respuesta única con la característica saliente de que esas preguntas poseen muchas opciones posibles. En efecto, las opciones son tantas como estudiantes estén cursando la materia. Desde un punto de vista metodológico lo importante no es tanto que las opciones sean muchas o pocas sino que el rango de estas es conocido y discreto.
 
@@ -134,7 +134,7 @@ El análisis de redes (*Network Analysis* o *NA*) es un enfoque que tiene una la
 ::: {.callout-note collapse="true"}
 ## Sabías qué? Análisis de redes y matemática
 
-El análisis de redes en general y el análisis de redes sociales en particular puede considerarse como una aplicación de una teoría matemática abstracta como es la [teoría de grafos](https://es.wikipedia.org/wiki/Teor%C3%ADa_de_grafos) (*Graph Theory*). Esta última se origina en un [clásico artículo](https://drive.google.com/file/d/1Vr1BQT-7GAK9ia5YbMfYul4Lwzhv3LVP/view) de Leonard Euler de 1741 en donde trata el conocido problema de [los siete puentes de Königsberg](https://es.wikipedia.org/wiki/Problema_de_los_puentes_de_K%C3%B6nigsberg) \[@euler1741\]. El problema consiste en encontrar un recorrido para cruzar a pie toda la ciudad pasando sólo una vez por cada uno de los puentes y regresando al mismo punto de inicio.
+El análisis de redes en general y el análisis de redes sociales en particular puede considerarse como una aplicación de una teoría matemática abstracta como es la [teoría de grafos](https://es.wikipedia.org/wiki/Teor%C3%ADa_de_grafos) (*Graph Theory*). Esta última se origina en un [clásico artículo](https://drive.google.com/file/d/1Vr1BQT-7GAK9ia5YbMfYul4Lwzhv3LVP/view) de Leonard Euler de 1741 en donde trata el conocido problema de [los siete puentes de Königsberg](https://es.wikipedia.org/wiki/Problema_de_los_puentes_de_K%C3%B6nigsberg) [@euler1741]. El problema consiste en encontrar un recorrido para cruzar a pie toda la ciudad pasando sólo una vez por cada uno de los puentes y regresando al mismo punto de inicio.
 
 ![](_book/Inputs/Images/euler_article.png){fig-align="center"}
 :::
