@@ -1,3 +1,9 @@
 # Complementación con fuentes secundarias
 
 Uno de los objetivos de la materia es, sin duda, aportar herramientas que permitan la producción de un dato primario de calidad. Sin embargo, también es cierto que una de las maneras de agregarle valor a cualquier dato primario es su pertinente combinación con algún otro dato secundario. Por último, especialmente en los casos en donde es inviable la producción de un mejor dato primario o en los casos en donde el dato necesario ya existe en forma de datos secundario, el uso de fuentes secundarias es la mejor opción.
+
+Por una cuestión pedagógica a continuación se hará un análisis que utilice tanto datos de la encuesta (fuente primaria) como datos del censo de 2010 (fuente secundaria).
+
+## Insumos de la encuesta
+
+En la encuesta existe un módulo de "vivienda". En él existen una serie de pregunta
