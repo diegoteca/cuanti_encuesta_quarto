@@ -2,21 +2,33 @@
 
 El producto de los procesos de producción y registro de los datos suele cristalizarce en una (o varias) bases de datos. Estas pueden (y suelen) contener diferentes tipos de errores por lo que se considera una buena práctica realizar un proceso de limpieza y preparación para recién después comenzar el proceso estricto del análisis de los mismas.
 
-En esta sección veremos algunos ejemplos tanto de limpieza, consistencia y construcción de nuevas variables. Aquí veremos ejemplos de los casos mas sencillos. Procesos como el pegado (*joint*) de variables, necesario cuando los datos se encuentran en diferentes archivos, no se verán aquí.
+En esta sección veremos algunos ejemplos tanto de limpieza, consistencia y construcción de nuevas variables. Aquí veremos ejemplos de los casos mas sencillos. Procesos como el pegado (*joint*) de variables, necesario cuando los datos se encuentran en diferentes archivos o bases de datos, no se verán aquí.
 
 ## Limpieza
 
 La idea de limpieza (*cleaning*) viene de usar la metáfora de dato sucio (*dirty*). Un dato sucio no necesariamente es un dato incorrecto aunque sí se trata de un tipo de dato más incómodo de trabajar ya que dificulta el posterior análisis.
 
-La tarea básica de limpieza (*cleaning*) que aquí se hará será el remombre de todas las variables. La razón de esta operación es que, al menos si se trabaja con google forms (aunque algo similar suele suceder con otros sistemas de formularios online), los nombres de las variables son el texto de la propia pregunta del formulario. Esto incomoda un poco el análisis de los datos por la gran extensión de algunas preguntas y esa incomodidad se traduce en una mayor propensión al error. En este sentido para trabajar con los nombres de las variables suele ser recomendable:
+La tarea de la limpieza de una base de datos suele implicar un tiempo, especialmente en bases de datos con muchas variables (muchas columnas). Si bien es una práctica recomendada siempre hay que tener en cuenta la "escala" del trabajo a realizar porque que en algunas situaciones puede que sea más simple corregir algunas cuestiones de manera artesanal o a mano en el proceso mismo de la publicación de los análisis. Esto suele ser particularmente cierto en algunos de los siguientes escenarios y sus posibles combinaciones:
 
--    Eliminar los espacios entre las palabras agregando algún símbolo que las una ("\_", "-" o cualquier otro),
+-   Encuestas con muchas preguntas en donde se sabe que se van a analizar una sola vez o que se analiza sólo una pequeña parte de la información disponible.
+
+-   Base de datos y procesos de análisis que luego no se van a compartir (los resultados se comparten pero estos no son replicables por terceros)
+
+De manera complementaria el proceso de limpieza se amortiza considerablemente cuando los datos se van a analizar más de una vez y cuando se requiere un grado de transparencia que exige que la investigación sea enteramente replicable.
+
+### Renombre de las variables
+
+La tarea básica de limpieza (*cleaning*) que aquí se hará será el **remombre de todas las variables**. La razón de esta operación es que, al menos si se trabaja con google forms (aunque algo similar suele suceder con otros sistemas de formularios online), los nombres de las variables son el texto de la propia pregunta del formulario. Esto incomoda un poco el análisis de los datos por la gran extensión de algunas preguntas y esa incomodidad se traduce en una mayor propensión al error. En este sentido para trabajar con los nombres de las variables suele ser recomendable:
+
+-   Eliminar los espacios entre las palabras agregando algún símbolo que las pegue o una ("\_", "-" o cualquier otro),
 
 -   Pasar todas las letras a minúscula (o mayúscula)
 
 -   Renombrar el nombre original con un nombre más corto y recordable. Una opción recomendable es que cuando en la encuesta haya variables que corresponde a un mismo módulo (p.e. módulo vivienda) se inicien por un mismo prefijo (viv_habitaciones, viv_inodoro, etc.).
 
-    Otra tarea diferente pero relacionada con la anterior tiene que ver con el orden de las variables en la base de datos. En algunos sistemas el orden de las variables tiene que ver con el orden cronológico en que se fueron construyendo las preguntas (p.e. en una encuesta) o con el orden en que luego se fueron construyendo variables complejas o recategoriaciones. En cualquier caso, lo que se debe tratar de lograr es que las variables que tienen relación temática entre sí, no sólo tengan un prefijo que las una sino que se encuentren visualmente cercanas en la base de datos. Esta recomendación es más importante cuanto más variables tenga la base de datos.
+### Orden de las variables
+
+Otra tarea diferente pero relacionada con la anterior tiene que ver con el **orden de las variables** en la base de datos. En algunos sistemas el orden de las variables tiene que ver con el orden cronológico en que se fueron construyendo las preguntas (p.e. en una encuesta) o con el orden en que luego se fueron construyendo variables complejas o recategoriaciones. En cualquier caso, lo que se debe tratar de lograr es que las variables que tienen relación temática entre sí, no sólo tengan un prefijo que las una sino que se encuentren visualmente cercanas en la base de datos. Esta recomendación es más importante cuanto más variables tenga la base de datos.
 
 ```{r}
 #| label: librerias
@@ -33,7 +45,7 @@ library(googledrive) # Más general para googledrive
 library(janitor) # Específico para limpieza y exploración
 library(lubridate) # Manejo de tiempos fechas
 library(readxl) # Lectura de archivos excel
-
+library(labelled) # Etiquetado de las variables
 
 # Identificación google drive
 
@@ -216,7 +228,7 @@ trab_dias_enfermedad = en_ese_trabajo_usted_tiene_dias_pagos_por_enfermedad,
 trab_dias_estudio = en_ese_trabajo_usted_tiene_dias_por_estudio,
 trab_horas = por_ultimo_cuantas_horas_incluyendo_las_horas_extras_trabajo_usted_la_semana_pasada)
 
-# Módulo Ingresos del Hogar
+# Módulo Ingresos del Hogar ----
 
 df_encuesta <- df_encuesta |>
 rename(
@@ -305,11 +317,68 @@ redes_3_contacto = selecciona_al_tercer_estudiante,
 redes_4_contacto = selecciona_al_cuarto_estudiante,
 redes_5_contacto = selecciona_al_quinto_estudiante) |>
 relocate(redes_tu_nombre, .before = redes_1_contacto)
+                  
+                  
+```
+
+### Etiquetado de las variables
+
+Antes se habló de renombrar y ordenar las variables. Sin embargo, en las ciencias sociales y en especial en aquellas disciplinas donde se encuentren difundidos programas estadísticos como el SPSS, SAS y Stata se usa la distinción entre **nombre de la variable y etiqueta de la misma**. El primero es como el nombre real de la variable y así lo entiende el mismo programa. La segunda es como un alias o un metadato que permite una interpretación más humana del significado de la variable. Muchas veces el contenido de la etiqueta se acerca a la pregunta original. Ahora bien, las variables, especialmente las que se suelen denomianar discretas o categóricas, aparte de tener un nombre pueden contener una serie finita de categorías.
+
+Cuando se trata de variables del tipo "Indique su cantidad de hijes" si la respuesta de la base de datos es un "2" se entiende que la persona ha respondido que tiene 2 hijes. Lo mismo si aparece un "1" o un "3". Se dice que estos son los **valores** de las variables. Pero el problema comienza, siguiendo una vieja tradición del análisis de datos (ver "De donde vienen las etiquetas") cuando como respuesta a variables del tipo "Indique su género" nos encontramos con símbolos (más precisamente numerales) como "1", "2", etc. en la base de datos. Estos símbolos se suelen llamar **códigos** y, sin información externa, no hay manera de saber que significan. Para eso vuelven en nuestra ayuda las etiquetas
+
+Así como hay etiquetas para los nombres de las variables también lo hay para sus etiquetas.
+
+La etiqueta es especialmente útil en los contextos de presentación de los análisis sea tanto en formato de tablas y gráficos. La razón es que el lector de los informes puede no estar al tanto ni del cuestionario original ni de la propia base de datos. Simplemente es un lector de un informe que desea, razonablemente, que en vez de algo como "n_hijes" apareza algo como "Cantidad de hijes" o que en vez de "3" en los análisis de la variable "Género" aparezca algo como "género no binario".
+
+```{r}
+#| label: etiquetado_nombres
+
+df_encuesta <- df_encuesta |>
+set_variable_labels(
+dni = "DNI",
+sexo = "Sexo",
+genero = "Género",
+fecha_nacimiento = "Fecha de nacimiento",
+edad = "Edad",
+estado_civil = "Estado civil",
+hog_n_miembros_hogar = "Cantidad de miembros del hogar",
+hog_convivencia_padres = "Convivencia con padres en el hogar",
+hog_convivencia_hijes = "Convivencia de hijes en el hogar",
+hog_n_menores_6 = "Cantidad de menores de 6 años en el hogar",
+hog_dificultad_cuidados_menores_6 = "Dificultad con los cuidados de los menores de 6 años",
+hog_principal_dificultad_menores_6 = "Principal dificultad con los menores de 6 años",
+hog_mayores_60 = "Presencia de mayores de 60 años en el hogar",
+hog_dificultad_cuidados_mayores_60 = "Dificutad con los ciudados de los mayores de 60 años",
+hog_principal_dificultad_mayores_60 = "Principal dificultad con los mayores de 60 años",
+viv_calle = "Calle",
+viv_altura = "Altura",
+viv_partido = "Departamento",
+viv_basural = "Vivienda cerca de basurales (< 3 cuadras)",
+viv_inundable = "Vivienda en zona inundable",
+viv_villa = "Viviena en villa de emergencia o asentamiento",
+viv_tipo = "Tipo de vivienda",
+viv_piso_interior = "Piso interior de la vivienda",
+viv_agua = "Origen del agua de la vivienda",
+viv_bano = "Posesión de inodoro en el baño",
+viv_desague = "Tipo de desague del baño",
+viv_bano_compartido = "Uso compartido del baño",
+viv_n_ambientes = "Cantidad de ambientes",
+viv_n_amb_dormir = "Cantidad de ambientes para dormir",
+viv_amb_estudio = "Presencia de un ambiente exclusivo para el estudio",
+viv_relacion_legal = "Relación legal con la vivienda")
 
 # Grabo el archivo
 
 write_rds(df_encuesta,
           here("Outputs","df_encuesta.rds"))
-                  
-                  
+
+
+
 ```
+
+### Tipo de dato de la variable
+
+Otro punto a destacar es lo que a veces de suele denominar "nivel de medición" de la variable. Este término se suele utilizar más en programas o lenguajes específicos para análisis de datos pero tienen una similitud con el proceso usual en una planilla de cálculo (excel, google sheet, etc) de aplicarle "formato" a la celda para indicarle si se trata de texto o un número y sí se trata de número de que tipo (porcentaje, fecha, decimal, etc.).
+
+Este tipo de metainformación suele ser útil para que el programa detecte que tipo de gráfico es apropiado o que tipo de cálculo realizar. De todos modos los programas vienen cada vez con mejores heurísticas para adiviniar, sin previa indicación de que tipo de dato se trata.

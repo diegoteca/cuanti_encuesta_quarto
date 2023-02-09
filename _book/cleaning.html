@@ -3999,7 +3999,12 @@ vertical-align: -.125em;
     <h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-  <li><a href="#limpieza" id="toc-limpieza" class="nav-link active" data-scroll-target="#limpieza"><span class="toc-section-number">2.1</span>  Limpieza</a></li>
+  <li><a href="#limpieza" id="toc-limpieza" class="nav-link active" data-scroll-target="#limpieza"><span class="toc-section-number">2.1</span>  Limpieza</a>
+  <ul class="collapse">
+  <li><a href="#renombre-de-las-variables" id="toc-renombre-de-las-variables" class="nav-link" data-scroll-target="#renombre-de-las-variables"><span class="toc-section-number">2.1.1</span>  Renombre de las variables</a></li>
+  <li><a href="#orden-de-las-variables" id="toc-orden-de-las-variables" class="nav-link" data-scroll-target="#orden-de-las-variables"><span class="toc-section-number">2.1.2</span>  Orden de las variables</a></li>
+  <li><a href="#etiquetado-de-las-variables" id="toc-etiquetado-de-las-variables" class="nav-link" data-scroll-target="#etiquetado-de-las-variables"><span class="toc-section-number">2.1.3</span>  Etiquetado de las variables</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -4028,13 +4033,34 @@ vertical-align: -.125em;
 <section id="limpieza" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="limpieza"><span class="header-section-number">2.1</span> Limpieza</h2>
 <p>La idea de limpieza (<em>cleaning</em>) viene de usar la metáfora de dato sucio (<em>dirty</em>). Un dato sucio no necesariamente es un dato incorrecto aunque sí se trata de un tipo de dato más incómodo de trabajar ya que dificulta el posterior análisis.</p>
-<p>La tarea básica de limpieza (<em>cleaning</em>) que aquí se hará será el remombre de todas las variables. La razón de esta operación es que, al menos si se trabaja con google forms (aunque lo mismo suele suceder con otros sistemas de formularios online), los nombres de las variables son el texto de la propia pregunta del formulario. Esto incomoda un poco el análisis de los datos por la gran extensión de algunas preguntas y esa incomodidad se traduce en una mayor propensión al error.</p>
-<pre class="rmdnote"><code></code></pre>
+<section id="renombre-de-las-variables" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="renombre-de-las-variables"><span class="header-section-number">2.1.1</span> Renombre de las variables</h3>
+<p>La tarea básica de limpieza (<em>cleaning</em>) que aquí se hará será el <strong>remombre de todas las variables</strong>. La razón de esta operación es que, al menos si se trabaja con google forms (aunque algo similar suele suceder con otros sistemas de formularios online), los nombres de las variables son el texto de la propia pregunta del formulario. Esto incomoda un poco el análisis de los datos por la gran extensión de algunas preguntas y esa incomodidad se traduce en una mayor propensión al error. En este sentido para trabajar con los nombres de las variables suele ser recomendable:</p>
+<ul>
+<li><p>Eliminar los espacios entre las palabras agregando algún símbolo que las pegue o una (“_”, “-” o cualquier otro),</p></li>
+<li><p>Pasar todas las letras a minúscula (o mayúscula)</p></li>
+<li><p>Renombrar el nombre original con un nombre más corto y recordable. Una opción recomendable es que cuando en la encuesta haya variables que corresponde a un mismo módulo (p.e. módulo vivienda) se inicien por un mismo prefijo (viv_habitaciones, viv_inodoro, etc.).</p></li>
+</ul>
+</section>
+<section id="orden-de-las-variables" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="orden-de-las-variables"><span class="header-section-number">2.1.2</span> Orden de las variables</h3>
+<p>Otra tarea diferente pero relacionada con la anterior tiene que ver con el <strong>orden de las variables</strong> en la base de datos. En algunos sistemas el orden de las variables tiene que ver con el orden cronológico en que se fueron construyendo las preguntas (p.e. en una encuesta) o con el orden en que luego se fueron construyendo variables complejas o recategoriaciones. En cualquier caso, lo que se debe tratar de lograr es que las variables que tienen relación temática entre sí, no sólo tengan un prefijo que las una sino que se encuentren visualmente cercanas en la base de datos. Esta recomendación es más importante cuanto más variables tenga la base de datos.</p>
+<div class="cell">
+
+</div>
+</section>
+<section id="etiquetado-de-las-variables" class="level3" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="etiquetado-de-las-variables"><span class="header-section-number">2.1.3</span> Etiquetado de las variables</h3>
+<p>Antes se habló de renombrar y ordenar las variables. Sin embargo, en las ciencias sociales y en especial en aquellas disciplinas donde se encuentren difundidos programas estadísticos como el SPSS, SAS y Stata se usa la distinción entre <strong>nombre de la variable y etiqueta de la misma</strong>. El primero es como el nombre real de la variable y así lo entiende el mismo programa. La segunda es como un alias o un metadato que permite una interpretación más humana del significado de la variable. Muchas veces el contenido de la etiqueta se acerca a la pregunta original. Ahora bien, las variables, especialmente las que se suelen denomianar discretas o categóricas, aparte de tener un nombre pueden contener una serie finita de categorías.</p>
+<p>Cuando se trata de variables del tipo “Indique su cantidad de hijes” si la respuesta de la base de datos es un “2” se entiende que la persona ha respondido que tiene 2 hijes. Lo mismo si aparece un “1” o un “3”. Se dice que estos son los <strong>valores</strong> de las variables. Pero el problema comienza, siguiendo una vieja tradición del análisis de datos (ver “De donde vienen las etiquetas”) cuando como respuesta a variables del tipo “Indique su género” nos encontramos con símbolos (más precisamente numerales) como “1”, “2”, etc. en la base de datos. Estos símbolos se suelen llamar <strong>códigos</strong> y, sin información externa, no hay manera de saber que significan. Para eso vuelven en nuestra ayuda las etiquetas</p>
+<p>Así como hay etiquetas para los nombres de las variables también lo hay para sus etiquetas.</p>
+<p>La etiqueta es especialmente útil en los contextos de presentación de los análisis sea tanto en formato de tablas y gráficos. La razón es que el lector de los informes puede no estar al tanto ni del cuestionario original ni de la propia base de datos. Simplemente es un lector de un informe que desea, razonablemente, que en vez de algo como “n_hijes” apareza algo como “Cantidad de hijes” o que en vez de “3” en los análisis de la variable “Género” aparezca algo como “género no binario”.</p>
 <div class="cell">
 
 </div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
