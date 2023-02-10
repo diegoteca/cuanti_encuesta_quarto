@@ -382,3 +382,20 @@ write_rds(df_encuesta,
 Otro punto a destacar es lo que a veces de suele denominar "nivel de medición" de la variable. Este término se suele utilizar más en programas o lenguajes específicos para análisis de datos pero tienen una similitud con el proceso usual en una planilla de cálculo (excel, google sheet, etc) de aplicarle "formato" a la celda para indicarle si se trata de texto o un número y sí se trata de número de que tipo (porcentaje, fecha, decimal, etc.).
 
 Este tipo de metainformación suele ser útil para que el programa detecte que tipo de gráfico es apropiado o que tipo de cálculo realizar. De todos modos los programas vienen cada vez con mejores heurísticas para adiviniar, sin previa indicación de que tipo de dato se trata.
+
+```{r}
+#| label: tipos_de_variable
+
+df_encuesta <- df_encuesta |>
+mutate(across(c(edad,
+              hog_n_miembros_hogar,
+              hog_n_menores_6,
+              viv_altura,
+              viv_n_ambientes,
+              viv_n_amb_dormir,
+              pref_soc_monto_donacion,
+              unaj_n_materias_cursando,
+              trab_horas,
+              ing_n_aportantes,
+              ing_totales), ~ as.numeric(.)))
+```
