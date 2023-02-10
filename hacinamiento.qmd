@@ -1,0 +1,124 @@
+# Complementación con fuentes secundarias
+
+## Hacinamiento
+
+```{r}
+#| label: librerias_hacinamiento
+#| include: false
+
+library(tidyverse)
+library(here)
+library(haven)
+library(gtsummary)
+library(labelled)
+
+theme_gtsummary_language(
+  language = "es")
+
+```
+
+```{r}
+i_am("hacinamiento.qmd")
+```
+
+Uno de los objetivos de la materia es, sin duda, aportar herramientas que permitan la producción de un dato primario de calidad. Sin embargo, también es cierto que una de las maneras de agregarle valor a cualquier dato primario es su pertinente combinación con algún otro dato secundario ya existente. Por otro lado, especialmente en a) los casos en donde, por las razones que sean, se considera inviable la producción de un dato primario o b) en los casos en donde el dato necesario ya existe en forma de datos secundario, el uso de fuentes secundarias es la mejor opción.
+
+A continuación, como modo de ejemplo de como complementar un dato primario con otro secundario, se hará un análisis que utilice tanto datos de la encuesta (como fuente primaria) como datos del censo de 2010 (como fuente secundaria).
+
+## Insumos de la encuesta
+
+```{r}
+#| label: vivienda_insumo
+#| warning: false
+# Levanto el dataset de la encuesta
+
+df_encuesta <- read_rds(here::here("Outputs", "df_encuesta.rds"))
+```
+
+En la encuesta existe un módulo de "vivienda". En él existen una serie de preguntas que refieren a la vivienda del encuestado. Algunas tienen más que ver con la ubicación de la vivienda (calle, altura, etc.) y servirán para georreferenciar a los encuestados. Otras tienen que ver con las características constructivas de la vivienda (piso, baño, etc) y, por último, otras tendrán que ver con el uso que se le da a esa construcción (hogares/personas que la usan, presencia de ciertos dispositivos, etc.). En algunas encuestas estas preguntas se implementan en otros módulos. Por ejemplo, se realiza un módulo exclusivo para el "hogar" en donde se hacen preguntas para cada miembro del hogar que las suele responder el encuestado en representación de aquellos.
+
+Con este tipo de preguntas se puede construir un indicador relativamente famoso en las ciencias sociales como es el indicador de hacimamiento. Este se puede calcular tanto hogares y personas. Existen varias definiciones operacionales (o criterios de medición) del concepto de hacinamiento aunque como idea general se puede afirmar que en cualquier definición de hacinamiento hay una relación explícita entre la cantidad y tipos de ambientes de la vivienda y la cantidad y tipo de miembros del hogar. Aunque muchas veces quede alga opacada por la discusión de cual es el punto de corte óptimo, lo que existe por detrás de la definición es la creencia (más o menos justificada según el caso) que el hacinamiento posee riegos asociados con el inadecuado espacio dentro del vivienda para dormir y, más en general, con cualquier actividad que se realice dentro de la vivienda. En este sentido, la pandemia de COVID-19 puso de relieve no sólo la cuestión de la (falta de) disponibilidad de dispositivos tecnológicos sino también la cuestion de la (falta de) disponibilidad de espacio para realizar algunas tareas en la casa como el trabajo y/o el estudio.
+
+Es interesante destacar que no sólo importa el "punto de corte" a partir del cual se considera hacinamiento (¿2 personas por ambiente?, ¿3 por ambiente?) sino también:
+
+a\) el tipo de ambiente (¿se usa para dormir?) y
+
+b\) el tipo de miembros (no es lo mismo una "pareja" que 2 hermanos de diferente sexo entre 12 y 17 años ...aunque en ambos casos la cantidad sea 2).
+
+En Argentina históricamente se le ha dado más importancia al tipo de ambiente pero en Europa desde hace varias décadas también se calcula en base al tipo de miembros del hogar.
+
+Idealmente, la cuestión del punto de corte más que consensuarse y explicitarse (como lo suguiere la típica idea de la definición operacional) debería justificarse en base a investigaciones empíricas que validen que ese criterio utilizado es mejor que otros criterios alternativos/competidores en cuanto a predecir algún valor considerado como *gold standard* en el mediano/largo plazo. Esto es un ejemplo de lo que se suele denominar **validación de criterio** en las ciencias sociales.
+
+::: {.callout-note collapse="true"}
+## Historia del concepto de hacinamiento
+
+A diferencia de otros conceptos más neutros en su terminología , el concepto de *hacinamiento* posee una connotación negativa en el mismo sentido que puede afirmarse del concepto de *pobreza*. Consecuentemente, se suelen utilizar para construir proposiciones en donde se evidencien sus efectos negativos en diferentes dominios de la realidad social.
+
+Por otro lado, el concepto de hacinamiento tiene una relación íntima con el concepto de *densidad poblacional.* Sin embargo, este último no contiene, de modo necesario, una connotación negativa como el primero. En ambos se encuentra por detras la idea de relacionar aspectos poblacionales (cantidad de personas en un hogar, cantidad de personas en determinada unidad administrativa, etc.) con algún aspecto que impliquen alguna restricción espacial (cantidad de habitaciones, cantidad de kilómetros cuadrados, etc.).
+
+::: panel-tabset
+## Hacinamiento
+
+![](Inputs/Images/hacinamiento_groucho.jpg)
+
+## Densidad poblacional
+
+![](Inputs/Images/densidad_edificios.jpg)
+:::
+
+En efecto, hasta mediados del siglo XX cuando todavía no estaba difundido el uso de la encuesta, la pata poblacional de ambos conceptos se solía "medír" utilizando una misma fuente de datos. Ambos lo hacian a través de los datos censales, agregando los casos sobre alguna unidad administrativa .
+
+This ecological pattern posed a potential problem, because if the densest residential areas happen also to be the poorest, and these same places have high pathology rates, it is difficult to say whether density or poverty is the causal facto
+:::
+
+## Explorando el dato primario
+
+Un punto metodológico interesante del concepto de hacinamiento es que puede considerar como un concepto relacional explícito. Esto, traducido a un contexto metodológico, implica que su medición empírica implica la relación de 2 variables para su cálculo por lo que, como primer paso, se deben medir 2 variables por separado que luego se relacionan mediante un cálculo. Esta característica pueder servir para mostrar el siguiente problema: ¿Se puede calcular un índice de hacinamiento relacionando las cantidades *agregadas* de habitaciones y personas de un determinado territorio?. Aquí la clave está en el término *agregadas* lo que invita a pensar en cual es el referente del concepto. ¿Son los hogares? ¿Son cada uno de los individuos que componen esos hogares? ¿En qué sentido se puede afirmar que un barrio se encuentra hacinado o, por lo menos, más o menos hacinado que otro barrio?. De modo más específico Esto también sirve para poner en práctica conceptos de la unidad 3 como la distinción entre análisis univariados y análisis bivariados.
+
+A continuación se realizará un análisis univariado que indique diferentes medidas de tendencia central en función del nivel de medición de las variables. Pensar/recordar el nivel de medición de las variables es importante para pensar que medida de tendencia central es apropiada. En el caso de los conceptos de la cantidad de ambientes, cantidad de habitaciones para dormir y la cantidad de miembros del hogar la idea de [n](https://es.wikipedia.org/wiki/N%C3%BAmero_natural)[úmero natural](https://es.wikipedia.org/wiki/N%C3%BAmero_natural "Ir a número natural") parece servir para representar correctamente sus propiedades. Esto implica, por ejemplo, que no tiene sentido afirmar que exista una cantidad de ambientes negativa (-3 ambientes), que la cantidad de ambientes y personas pega saltos discretos (no hay algo como 1,5 personas). Las características anteriores son esenciales en la idea de frecuencia y se puede entender como el producto de realizar la operación de contar. En esos casos se dice que la variable posee un nivel de medición de razón. ¿Porqué de razón? Justamente porque se puede aplicar, de manera legítima, la operación aritmética de dividir (*ratio*). Esta característica es la que explotan los conceptos de hacinamiento y el de densidad de población.
+
+Volviendo a la cuestión del análisis univariado, a continuación se presentan las medias aritméticas para el caso de las variables de razón y el porcentaje para la variable que detecta la presencia ("SI/NO") de un ambiente exclusivo para el estudio.
+
+```{r}
+#| label: hacinamiento_univariado
+#| echo: false
+
+td_hacinamiento <- df_encuesta |>
+select(viv_n_ambientes, viv_n_amb_dormir, viv_amb_estudio, hog_n_miembros_hogar) |>
+#mutate(across(c(viv_n_ambientes, viv_n_amb_dormir), ~ as.integer(.))) |>
+#copy_labels_from(df_encuesta) |>
+tbl_summary(
+type = list(c(viv_n_ambientes, viv_n_amb_dormir, hog_n_miembros_hogar) ~ "continuous"),
+statistic = list(all_continuous() ~ "{mean}")) # Media y primer y tercer cuartil
+
+td_hacinamiento
+
+testing1 <- as.numeric(inline_text(td_hacinamiento, variable = viv_n_amb_dormir))
+testing2 <- as.numeric(inline_text(td_hacinamiento, variable = hog_n_miembros_hogar))
+
+testing3 <- round(testing2/testing1, 2)
+```
+
+Con los resultados de la tabla anterior a la mano uno se ve tentado de relacionar, más precisamente de dividir, la media de la cantidad de ambientes para dormir (`` `r testing1` ``) sobre la media de la cantidad de miembros del hogar (`` `r testing2` ``). Esta cuentita da que hay `` `r testing3` `` personas por cada ambiente para dormir. Si es por la cuestión de los niveles de medición la operación anterior es legítima. El problema es que el concepto de hacinamiento está pensado para ser calculado para cada hogar por separado y luego, por una cuestión transitiva, imputarlo a cada miembro de ese hogar si se quiere calcular cuantas personas viven hacinadas.
+
+No se trata simplemente de dividir con , respectively
+
+## Combinando con datos censales
+
+Una de las fuentes secundarias por excelencia, no sólo en Argentina sino en la mayoría de los países, son los Censos nacionales de población. En este caso, utlizaremos los datos del censo del 2010.
+
+```{r}
+#| label: insumo_censo
+#| eval: false
+
+# La idea es agarrar el csv de las personas y convertirlo a parquet file
+# Esto lo hago una sola vez y dejo el código pero en próximas corridas sólo se utiliza como insumo el producto del código anterior
+
+library(arrow)
+censo_persona_csv <- read_csv(here("Inputs", "PERSONA.csv"))
+censo_persona_arrow <- read_csv_arrow(here("Inputs", "PERSONA.csv"))
+censo_persona_sav <- read_spss(here("Inputs", "PERSONA.sav"))
+
+ read_csv_arrow()
+df_encuesta <- read_rds(here::here("Outputs", "df_encuesta.rds"))
+```
