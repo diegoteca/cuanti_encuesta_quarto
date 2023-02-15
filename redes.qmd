@@ -245,7 +245,7 @@ subtitle = "Estudiantes del ultimo cuatrimestre",
 edge_alpha = "Grado de intermediación",
 fill = "Comisiones",
 size = "Grado de centralidad") +
-theme_graph() +
+theme_graph(base_family = 'Helvetica') + # Para que funcione en PDF
 theme(legend.key.size = unit(10, 'cm'), #change legend key size
       legend.key.height = unit(1, 'cm'), #change legend key height
       legend.key.width = unit(1, 'cm'), #change legend key width
