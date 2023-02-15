@@ -1,10 +1,17 @@
+# Configuración del proyecto en modo "libro"
+
 project:
   type: book
+  execute-dir: project
+  output-dir: _book
+  
+# Configuración del libro
 
 book:
   title: "Informe Encuesta Metodología y Técnicas Cuantitativas"
   author: "Metodología Cuantitativa"
   date: now
+  page-navigation: true
   chapters:
     - index.qmd
     - design.qmd
@@ -24,13 +31,15 @@ format:
     theme: cosmo
     code-fold: true
     embed-resources: true
+    self-contained-math: true # Esto es necesario para algunos gráficos interactivos
   pdf:
     documentclass: scrreprt
     
 execute: 
   warning: false
   echo: false
-
+  freeze: false 
+  
 editor: visual
 lang: es
 

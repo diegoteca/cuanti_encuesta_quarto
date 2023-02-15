@@ -9,7 +9,7 @@ UseSpacesForTab: Yes
 NumSpacesForTab: 10
 Encoding: UTF-8
 
-RnwWeave: Sweave
-LaTeX: pdfLaTeX
+RnwWeave: knitr
+LaTeX: XeLaTeX
 
 ZoteroLibraries: "My Library"

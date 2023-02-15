@@ -34,7 +34,7 @@ En la antigüedad, cuando sólo se sabía la ubicación específica de pocos ele
 
 En la actualidad, gracias a la tecnología satelital, se puede tener información de la ubicación específica de (casi) todo lo que a uno le interese y . De todos modos, la parte conceptual que se encuentra por detrás de lo anterior es sumamente antigua y En efecto, su creador fue nuestro viejo amigo [Eratóstenes](https://diegoteca.com.ar/metodocuanti/?p=188). Él ideó lo que se considera el primer sistema de coordenadas geográfica en donde, bajo el supuesto de la esferidad perfecta (un cuerpo), con sólo 2 datos se podría determinar cualquier posición.
 
-![Sistemas de coordenadas teniendo como referencia una esfera o algún tipo de elipsoide.](Inputs/Images/coordenadas.gif)
+![Sistemas de coordenadas teniendo como referencia una esfera o algún tipo de elipsoide.](Inputs/Images/coordenadas.png)
 
 De modo conceptualmente independiente, para localizar esa posición en un mapa de 2 dimensiones (plano) se requiere una proyección, esto es, una relación ordenada entre los puntos de la superficie curva de la Tierra, (o en general de cualquier cuerpo) y los de un mapa, (o en general de cualquier plano).
 
@@ -55,7 +55,7 @@ Snow llegó a su conclusión luego de «georeferenciar» los fallecimientos (gra
 
 Los principales análisis que se muestran a continuación se basan en una serie de preguntas del módulo de vivienda que refieren a la dirección de la misma como la calle, la altura y el partido o departamento del estudiante.
 
-![pregunta_ubicacion_vivienda](Inputs/Images/pregunta_geo.png){width="600"}
+![Preguntas sobre ubicación de la vivienda](Inputs/Images/pregunta_geo.png){width="600"}
 
 ```{r}
 #| label: geo_cleaning
