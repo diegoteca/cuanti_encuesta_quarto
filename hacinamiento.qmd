@@ -21,9 +21,19 @@ theme_gtsummary_language(
 i_am("hacinamiento.qmd")
 ```
 
+<<<<<<< Updated upstream
 Uno de los objetivos de la materia es, sin duda, aportar herramientas que permitan la producción de un dato primario de calidad. Sin embargo, también es cierto que una de las maneras de agregarle valor a cualquier dato primario es su pertinente combinación con algún otro dato secundario ya existente. Por otro lado, especialmente en a) los casos en donde, por las razones que sean, se considera inviable la producción de un dato primario o b) en los casos en donde el dato necesario ya existe en forma de datos secundario, el uso de fuentes secundarias es la mejor opción.
 
 A continuación, como modo de ejemplo de como complementar un dato primario con otro secundario, se hará un análisis que utilice tanto datos de la encuesta (como fuente primaria) como datos del censo de 2010 (como fuente secundaria).
+=======
+Uno de los objetivos de la materia es, como se detalla en el programa, aportar herramientas que permitan la producción de un dato primario de calidad. Sin embargo, también es cierto que una de las maneras de agregarle valor a cualquier dato primario es su pertinente combinación con algún otro dato secundario ya existente. Por otro lado, existen situaciones en donde el uso exclusivo de fuentes secundarios es la mejor opción. Ejemplos típicos pueden considerarse:
+
+a\) Por las razones que sean, se estima inviable la producción de un dato primario y/o
+
+b\) El dato necesario ya existe en forma de datos secundario,
+
+A continuación, a modo de ejemplo de como complementar un dato primario con otro secundario, se hará un análisis que utilice tanto datos de la encuesta (como fuente primaria) como algunos datos del censo de 2010 (como fuente secundaria).
+>>>>>>> Stashed changes
 
 ## Insumos de la encuesta
 
@@ -35,6 +45,7 @@ A continuación, como modo de ejemplo de como complementar un dato primario con 
 df_encuesta <- read_rds(here::here("Outputs", "df_encuesta.rds"))
 ```
 
+<<<<<<< Updated upstream
 En la encuesta existe un módulo de "vivienda". En él existen una serie de preguntas que refieren a la vivienda del encuestado. Algunas tienen más que ver con la ubicación de la vivienda (calle, altura, etc.) y servirán para georreferenciar a los encuestados. Otras tienen que ver con las características constructivas de la vivienda (piso, baño, etc) y, por último, otras tendrán que ver con el uso que se le da a esa construcción (hogares/personas que la usan, presencia de ciertos dispositivos, etc.). En algunas encuestas estas preguntas se implementan en otros módulos. Por ejemplo, se realiza un módulo exclusivo para el "hogar" en donde se hacen preguntas para cada miembro del hogar que las suele responder el encuestado en representación de aquellos.
 
 Con este tipo de preguntas se puede construir un indicador relativamente famoso en las ciencias sociales como es el indicador de hacimamiento. Este se puede calcular tanto hogares y personas. Existen varias definiciones operacionales (o criterios de medición) del concepto de hacinamiento aunque como idea general se puede afirmar que en cualquier definición de hacinamiento hay una relación explícita entre la cantidad y tipos de ambientes de la vivienda y la cantidad y tipo de miembros del hogar. Aunque muchas veces quede alga opacada por la discusión de cual es el punto de corte óptimo, lo que existe por detrás de la definición es la creencia (más o menos justificada según el caso) que el hacinamiento posee riegos asociados con el inadecuado espacio dentro del vivienda para dormir y, más en general, con cualquier actividad que se realice dentro de la vivienda. En este sentido, la pandemia de COVID-19 puso de relieve no sólo la cuestión de la (falta de) disponibilidad de dispositivos tecnológicos sino también la cuestion de la (falta de) disponibilidad de espacio para realizar algunas tareas en la casa como el trabajo y/o el estudio.
@@ -48,13 +59,34 @@ b\) el tipo de miembros (no es lo mismo una "pareja" que 2 hermanos de diferente
 En Argentina históricamente se le ha dado más importancia al tipo de ambiente pero en Europa desde hace varias décadas también se calcula en base al tipo de miembros del hogar.
 
 Idealmente, la cuestión del punto de corte más que consensuarse y explicitarse (como lo suguiere la típica idea de la definición operacional) debería justificarse en base a investigaciones empíricas que validen que ese criterio utilizado es mejor que otros criterios alternativos/competidores en cuanto a predecir algún valor considerado como *gold standard* en el mediano/largo plazo. Esto es un ejemplo de lo que se suele denominar **validación de criterio** en las ciencias sociales.
+=======
+En la encuesta existe un módulo de "vivienda" en donde se encuentran una serie de preguntas que refieren a la vivienda del encuestado. Algunas tienen más que ver con la ubicación de la vivienda (calle, altura, etc.) y sirven para georreferenciar a los encuestados. Otras tienen que ver con características constructivas de la vivienda (piso, baño, cantidad de habitaciones, etc), otras con la relación legal del hogar con la vivienda (dueño, inquilino, etc.). La encuesta también contiene un pequeño módulo sobre el "hogar" en donde se incluyen preguntas como la cantidad y tipo de personas que conforman el hogar. En este sentido, el hogar se entiende como algo diferenciable de la vivienda y en una misma vivienda puede haber más de un hogar. En efecto, la definición que utiliza el INDEC para hogar es la de persona o grupo de personas, parientes o no, que viven bajo el mismo techo y comparten los gastos de alimentación.
+
+Con este tipo de preguntas se puede construir un indicador relativamente difundido en las ciencias sociales como es el indicador de **hacimamiento**. Este se calcula para hogares y, de manera transitiva, luego se puede calcular para las personas. Existen varias definiciones operacionales (o criterios de medición) del concepto de hacinamiento aunque como idea general se puede afirmar que en cualquier definición de hacinamiento hay una relación explícita entre la cantidad y tipos de ambientes de la vivienda y la cantidad y tipo de miembros del hogar. Aunque muchas veces la relación anterior quede alga opacada por la discusión de cual es el punto de corte óptimo, lo que existe por detrás de la definición es la creencia (más o menos justificada según el caso) que el hacinamiento posee riegos asociados con efectos consideras como negativos y que estos se deben, en parte, al inadecuado espacio dentro del vivienda para dormir y, más en general, al inadecuado espacio para realizar otras actividades dentro de la vivienda como estudiar, socializar, etc.. En este sentido, la pandemia de COVID-19 puso de relieve no sólo la cuestión de la (falta de) disponibilidad de dispositivos tecnológicos sino también la cuestion de la (falta de) disponibilidad de espacio para realizar algunas tareas en la casa como el trabajo y/o el estudio.
+
+Es interesante volver a destacar que no sólo importa el "punto de corte" a partir del cual se considera hacinamiento (¿2 personas por ambiente?, ¿3 por ambiente?) sino también:
+
+a\) el tipo de ambiente (¿se debe contar sólo aquellos que se utilizan para dormir?) y
+
+b\) el tipo de relación entre los miembros (no es lo mismo que en una habitación duerman una "pareja" que 2 hermanos entre 12 y 17 años de diferente sexo ...aunque en ambos casos la cantidad de personas sean 2).
+
+En Argentina históricamente se le ha dado importancia al tipo de ambiente pero en Europa desde hace varias décadas también se calcula en base al tipo de relaciones entre los miembros del hogar.
+
+Idealmente, la discusión sobre el punto de corte, más que explicitarse (como lo suguiere la típica idea de la definición operacional), debería justificarse en base a (otras) investigaciones empíricas que validen que ese criterio utilizado es mejor que otros criterios alternativos/competidores en cuanto a predecir algún valor considerado como *gold standard* en el mediano/largo plazo. Esto es un ejemplo de lo que se suele denominar **validación de criterio** en las ciencias sociales.
+>>>>>>> Stashed changes
 
 ::: {.callout-note collapse="true"}
 ## Historia del concepto de hacinamiento
 
+<<<<<<< Updated upstream
 A diferencia de otros conceptos más neutros en su terminología , el concepto de *hacinamiento* posee una connotación negativa en el mismo sentido que puede afirmarse del concepto de *pobreza*. Consecuentemente, se suelen utilizar para construir proposiciones en donde se evidencien sus efectos negativos en diferentes dominios de la realidad social.
 
 Por otro lado, el concepto de hacinamiento tiene una relación íntima con el concepto de *densidad poblacional.* Sin embargo, este último no contiene, de modo necesario, una connotación negativa como el primero. En ambos se encuentra por detras la idea de relacionar aspectos poblacionales (cantidad de personas en un hogar, cantidad de personas en determinada unidad administrativa, etc.) con algún aspecto que impliquen alguna restricción espacial (cantidad de habitaciones, cantidad de kilómetros cuadrados, etc.).
+=======
+A diferencia de otros conceptos más neutros en su terminología , el concepto de **hacinamiento** (*overcrowding*) posee una connotación negativa en el mismo sentido que el concepto de **pobreza**. Consecuentemente, se suelen utilizar para construir proposiciones en donde se evidencien sus efectos negativos en diferentes dominios de la realidad social. En otras palabras, a mayor hacinamiento se esperan mayores efectos negativos en otras dimensiones.
+
+Por otro lado, el concepto de hacinamiento tiene una relación íntima con el concepto de **densidad** **poblacional***.* Sin embargo, este último no contiene, de modo necesario, una connotación negativa como el primero. En ambos se encuentra por detras la idea de relacionar aspectos poblacionales (p.e. cantidad de personas en un hogar en el primero y cantidad de personas en determinada administrativa en el segundo) con algún aspecto que implique alguna restricción espacial (p.e. cantidad de habitaciones en el primero, cantidad de kilómetros cuadrados en el segundo).
+>>>>>>> Stashed changes
 
 ::: panel-tabset
 ## Hacinamiento
@@ -66,9 +98,19 @@ Por otro lado, el concepto de hacinamiento tiene una relación íntima con el co
 ![](Inputs/Images/densidad_edificios.jpg)
 :::
 
+<<<<<<< Updated upstream
 En efecto, hasta mediados del siglo XX cuando todavía no estaba difundido el uso de la encuesta, la pata poblacional de ambos conceptos se solía "medír" utilizando una misma fuente de datos. Ambos lo hacian a través de los datos censales, agregando los casos sobre alguna unidad administrativa .
 
 This ecological pattern posed a potential problem, because if the densest residential areas happen also to be the poorest, and these same places have high pathology rates, it is difficult to say whether density or poverty is the causal facto
+=======
+En efecto, es después del crecimiento de las ciudades fabriles de la revolución industrial y la difusión de la hipótesis Malthusiana sobre el crecimiento de la población, que las ideas de hacinamiento y densidad poblacional se comienzan a relacionar más explícitamente. Pero cabe destacar que, al menos desde un punto de vista metodológico, guardan una importante diferencia. La densidad poblacional refiere sobre unidades administrativas y el hacinamiento predica sobre los hogares. Esto permite que la densidad poblacional de una unidad administrativa se pueda calcular con datos agregados de esa unidad administrativa mientras que para el cálculo de la tasa de hacinamiento de esa misma unidad administrativa se necesita relacionar la cantidad de personas con la cantidad de ambientes de **cada una** de sus viviendas.
+
+Hasta mediados del siglo XX, cuando todavía no se preguntaba por la cantidad de personas y ambientes en la vivienda en muchos censos, era usual utilizar el valor de la densidad poblacional como un indicador del hacinamiento. Si bien puede ser una decisión razonable en contextos de escases de información, esa estrategia contiene el problema metodológico de la [falacia ecológica](https://es.wikipedia.org/wiki/Falacia_ecol%C3%B3gica "Ir a falacia ecológica").
+
+La situación anterior cambió bastante cuando, a mediados del siglo XX una nueva ola de investigaciones, con origen en la biología, encontraron a través de diseños experimentales una relación positiva entre convivir con otros animales en un hábitat pequeño y aumento de la agresión y la aparición de enfermedades [@calhoun1962]. Este tipo de investigaciones generaron un renovado interés en el concepto de hacinamiento en las ciencias sociales por lo que se incorporaron estas preguntas en muchos censos de población e, interesante desde un punto de vista metodológico, generó una mayor cantidad de investigaciones en base a encuestas, algunas de las cuales se aplicaron con diseños longitudinales [@solari2012].
+
+Para cerrar se destaca que, al menos en muchas sociedades urbanas modernas, los problemas que se relacionan con el hacinamiento también están asociados con la pobreza por lo que es (más) difícil determinar algunas relaciones de causalidad. En otros casos, como el ejemplo de la foto de los edificios, existe alta densidad poblacional pero bajo hacinamiento en parte porque también hay baja pobreza. En otros casos, por ejemplo en regiones muy poco pobladas (piénsense en zonas muy frías como la Antártida o el Ártico) hay muy poca densidad poblacional y alto hacinamiento, pero ese tipo de hacinamiento no parece generar mayores problemas ni en la salud ni en la socialización.
+>>>>>>> Stashed changes
 :::
 
 ## Explorando el dato primario
