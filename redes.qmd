@@ -136,7 +136,7 @@ El análisis de redes (*Network Analysis* o *NA*) es un enfoque que tiene una la
 
 El análisis de redes en general y el análisis de redes sociales en particular puede considerarse como una aplicación de una teoría matemática abstracta como es la [teoría de grafos](https://es.wikipedia.org/wiki/Teor%C3%ADa_de_grafos) (*Graph Theory*). Esta última se origina en un [clásico artículo](https://drive.google.com/file/d/1Vr1BQT-7GAK9ia5YbMfYul4Lwzhv3LVP/view) de Leonard Euler de 1741 en donde trata el conocido problema de [los siete puentes de Königsberg](https://es.wikipedia.org/wiki/Problema_de_los_puentes_de_K%C3%B6nigsberg) [@euler1741]. El problema consiste en encontrar un recorrido para cruzar a pie toda la ciudad pasando sólo una vez por cada uno de los puentes y regresando al mismo punto de inicio.
 
-![](_book/Inputs/Images/euler_article.png){fig-align="center"}
+![](Inputs/Images/titulo_euler.png){fig-align="center"}
 :::
 
 Recién luego de varias décadas la visualización del sociograma se relacionó explícitamente con la teoría de grafos, dando origen al SNA. Si los sociogramas tenían la dificultad metodológica de su construcción, con la incorporación de la teoría de grafos se sumó la dificultad metodológica del análisis de esos datos. Estas 2 condiciones todavía afectan mucho el grado de difusión de este enfoque, aunque en la actualidad tanto la huella digital contenida en la redes sociales virtuales (facebook, twitter, etc.) como la emergencia de programas informáticos que facilitan el análisis ha favorecido una mayor difusión. En parte por lo anterior, en lo que sigue se mostrará como se pueden hacer análisis y visualizaciones de redes con datos provenientes de una base original de casos x columnas.

@@ -4,15 +4,21 @@ project:
 book:
   title: "Informe Encuesta Metodología y Técnicas Cuantitativas"
   author: "Metodología Cuantitativa"
+  cover-image: "Inputs/Images/formulas_mujer.png"
   date: now
   chapters:
-    - index.qmd
-    - design.qmd
-    - cleaning.qmd
-    - geo.qmd
-    - text.qmd
-    - redes.qmd
-    - references.qmd
+    - part: "Parte 1. Diseño y preparación de los datos"
+      chapters:
+        - index.qmd
+        - design.qmd
+        - cleaning.qmd
+        - hacinamiento.qmd
+    - part: "Parte 3. Análisis más complejos"
+      chapters:
+        - geo.qmd
+        - text.qmd
+        - redes.qmd
+        - references.qmd
 
 bibliography: [bibliography.bib]
 #csl: chicago-author-date.csl 
@@ -27,7 +33,8 @@ format:
   pdf:
     documentclass: scrreprt
     
-execute: 
+execute:
+  freeze: true
   warning: false
   echo: false
 
