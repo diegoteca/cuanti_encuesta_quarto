@@ -1,0 +1,17 @@
+## Complementación de fuentes secundarias
+
+Dos de los objetivos de la materia son, como se detalla en el programa:
+
+-   Aportar herramientas que permitan la producción de un dato primario de calidad y
+
+-   Lograr un conocimiento mínimo de la existencia y pertinencia de las técnicas de análisis de datos *básicas* y una *habilidad* mínima en la ejecución de las mismas.
+
+Mucho de este documento está dise diseñado para ayudar a cumplir esos objetivos. Sin embargo, también es cierto que una de las maneras de agregarle valor a cualquier dato primario es, principalmente en el momento de su análisis, su pertinente combinación con algún otro dato secundario ya existente. Por otro lado, existen situaciones en donde el uso **exclusivo** de fuentes secundarios es la mejor opción. Ejemplos típicos pueden considerarse:
+
+a\) Por las razones que sean, se estima inviable la producción de un dato primario y/o
+
+b\) El dato necesario ya existe en forma de datos secundario,
+
+En los siguiente capítulos se mostrarán ejemplos de como complementar una fuente primaria (como la encuesta de la materia) con diferentes fuentes secundarias. Cabe aclarar que en la actualidad la distinción entre fuentes primarias y secundarias, si bien clara desde lo conceptual, se ha puesto algo opaca desde la práctica de una investigación concreta. La razón principal de este fenómeno es la gran proliferación de datos secundarios a los que es necesario una gran cantidad de trabajo posterior para que sean útiles para los fines de la investigación.
+
+En efecto, existen muchas fuentes secundarias que, si bien disponibles, son difíciles de acceder y/o difíciles de trabajar. Sólo con una gran cantidad de trabajo posterior, que usualmente se engloban bajo la gran etiqueta de "análisis de datos", esas fuentes secundarias se convierten en datos útiles que sirven para los fines de la investigación.

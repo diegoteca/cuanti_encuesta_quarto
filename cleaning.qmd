@@ -377,7 +377,7 @@ write_rds(df_encuesta,
 
 ```
 
-### Tipo de dato de la variable
+### Tipo de datos de las variables
 
 Otro punto a destacar es lo que a veces de suele denominar "nivel de medición" de la variable. Este término se suele utilizar más en programas o lenguajes específicos para análisis de datos pero tienen una similitud con el proceso usual en una planilla de cálculo (excel, google sheet, etc) de aplicarle "formato" a la celda para indicarle si se trata de texto o un número y sí se trata de número de que tipo (porcentaje, fecha, decimal, etc.).
 

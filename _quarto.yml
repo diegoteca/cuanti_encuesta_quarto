@@ -4,7 +4,9 @@ project:
 book:
   title: "Informe Encuesta Metodología y Técnicas Cuantitativas"
   author: "Metodología Cuantitativa"
-  cover-image: "Inputs/Images/formulas_mujer.png"
+ # cover-image: "Inputs/Images/formulas_mujer.png"
+  search: true
+  downloads: epub
   date: now
   chapters:
     - part: "Parte 1. Diseño y preparación de los datos"
@@ -12,6 +14,8 @@ book:
         - index.qmd
         - design.qmd
         - cleaning.qmd
+    - part: intro_fuentes_secundarias.qmd
+      chapters: 
         - hacinamiento.qmd
     - part: "Parte 3. Análisis más complejos"
       chapters:
@@ -30,8 +34,11 @@ format:
     theme: cosmo
     code-fold: true
     embed-resources: true
+    number-sections: true
   pdf:
     documentclass: scrreprt
+  epub:
+    title: "Informe Encuesta Metodología y Técnicas Cuantitativas"
     
 execute:
   freeze: true
