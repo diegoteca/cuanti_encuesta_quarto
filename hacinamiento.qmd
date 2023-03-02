@@ -19,7 +19,7 @@ theme_gtsummary_language(
 i_am("hacinamiento.qmd")
 ```
 
-A continuación, a modo de ejemplo de como complementar un dato primario con otro secundario, se hará un análisis que utilice tanto datos de la encuesta (como fuente primaria) como algunos datos del censo de 2010 (como fuente secundaria). El tema a tratar será el del hacinamiento.
+A continuación, a modo de ejemplo de como complementar un dato primario con otro secundario, se hará un análisis que utilice tanto datos de la encuesta (como fuente primaria) como algunos datos del censo de 2010 (como fuente secundaria). El tema a tratar será hacinamiento.
 
 ## Insumos de la encuesta
 
@@ -73,49 +73,72 @@ Para cerrar se destaca que, al menos en muchas sociedades urbanas modernas, los 
 
 ## Explorando el dato primario
 
-Un punto metodológico interesante del concepto de hacinamiento, al menos antes de la decisión de considerar un punto de corte a partir del cual un hogar se considera hacinado, es que se puede considerar como un ejemplo de concepto cuantitativo [@klimovsky1998, pag. 252-257]. Entre otras características, podremos con el realizar legítimamente una serie de operaciones matemáticas (dividir, multiplicar, etc.) asumiendo que los valores de esas operaciones "representan" valores de los objetos medidos. En el caso específico del concepto de hacinamiento lo anterior es posible porque su medición empírica implica la medición previa de 2 variables con un nivel de medición de "razón" para recién después realizar el respectivo cálculo. En este sentido, también se suele afirmar que hacinamiento es un ejemplo de una **variable compuesta** o **índice** ya que el hacinamiento, como variable, se "calcula" más que "medirse". Lo que se mide, a través de operaciones empíricas, son los indicadores que operan de insumo (p.e. cantidad de habitaciones, cantidad de personas).
+Un punto metodológico interesante del concepto de hacinamiento, al menos antes de la decisión de considerar un punto de corte a partir del cual un hogar se considera hacinado, es que se puede considerar como un ejemplo de concepto cuantitativo [@klimovsky1998, pag. 252-257]. Entre otras características, podremos con el realizar legítimamente una serie de operaciones matemáticas (dividir, multiplicar, etc.) asumiendo que los valores de esas operaciones "representan" valores de los objetos medidos. En el caso específico del concepto de hacinamiento, que utiliza la operación de **dividir** al relacionar la cantidad de personas con la cantidad de ambientes, lo anterior es posible porque su medición empírica implica la medición previa de 2 variables con un nivel de medición de "razón". En este sentido, también se suele afirmar que hacinamiento es un ejemplo de una **variable compuesta** o **índice** ya que el hacinamiento, como variable, se "calcula" más que "medirse". Lo que se mide, a través de operaciones empíricas, son las variables que operan de insumo (p.e. cantidad de habitaciones, cantidad de personas).
 
-Esta característica pueder servir para mostrar el siguiente problema: ¿Se puede calcular un índice de hacinamiento relacionando las cantidades *agregadas* de habitaciones y personas de un determinado territorio? ¿El resultado es el mismo si se calcula para cada hogar? ¿Si hay diferencias, cuál es el valor correcto?. Que el resultado sea igual de manera agregada o desagregada es una contingencia empírica y no tiene nada necesario tanto para que sea igual, aproximadamente similiar o muy diferentes. Puede ser muy similar pero puede que no, por lo que es necesario pensar cual es el valor correcto. Aquí la clave está en el término *agregado* lo que invita a pensar en cual es/son el/los referente/s del concepto que se agrega/n ¿Son los hogares? ¿Son cada uno de los individuos que componen esos hogares? ¿En qué sentido se puede afirmar que un barrio se encuentra hacinado o, por lo menos, más o menos hacinado que otro barrio?. En principio, esto se debería resolver con un análisis conceptual inpeccionando las definiciones de los conceptos utilizados. Como se detalla en la nota de arriba sobre la historia del concepto de hacinamiento el mismo refiere a los hogares, por lo que para su cálculo se debe tener, al mismo tiempo, la información de la cantidad de habitaciones de la vivienda y la cantidad de personas que componen el hogar.
+Esta característica pueder servir para mostrar el siguiente problema: ¿Se puede calcular un índice de hacinamiento relacionando las cantidades *agregadas* de habitaciones y personas de un determinado territorio? ¿El resultado es el mismo si primero se calcula el hacinamiento para cada hogar y luego se calcula un promedio de esos valores?. Si hay diferencias entre ambas estrategias, ¿Cuál es el valor correcto?.
+
+En primer lugar, que el resultado sea igual tanto con la estrategia agregada o la desagregada es una contingencia empírica. No hay nada necesario para que ambos valores sean iguales, aproximadamente similiares o muy diferentes. Dado lo anterior, el problema es pensar cual es la estrategia correcta. Aquí la clave está en cual es/son el/los referente/s del concepto que se agrega/n. ¿Son los hogares? ¿Son cada uno de los individuos que componen esos hogares? ¿En qué sentido se puede afirmar que un barrio se encuentra hacinado, o tiene "x" nivel de hacinamiento o, por lo menos, que se encuentra más o menos hacinado que otro barrio?. En principio, esto se debería resolver con un análisis conceptual inpeccionando las definiciones de los conceptos utilizados. Como se detalla en la nota de arriba sobre la historia del concepto de hacinamiento, el mismo refiere a los hogares, por lo que para su cálculo se debe tener, al mismo tiempo, la información de la cantidad de habitaciones de la vivienda y la cantidad de personas que componen el hogar.
 
 A modo de ejemplo, a continuación se calcula la media de hacinamiento tanto de manera agregada como de manera desagregada.
 
 ```{r}
-#| label: hacinamiento_media_desagregada
+#| label: hacinamiento_desagregado
 
 df_encuesta = df_encuesta |>
 mutate(hacinamiento = hog_n_miembros_hogar/viv_n_ambientes) |>
 set_variable_labels(hacinamiento = "Hacinamiento")
 
-tb_hacinamiento = df_encuesta |>
-  tbl_continuous(
-    variable = hacinamiento,
-    include = sexo)
+# Con custom summary no hace falta agregar especificar muchos campos
 
-tb_hacinamiento
+hacinamiento_desagregado = df_encuesta |>
+  tbl_custom_summary(
+    include = hacinamiento,
+    stat_fns = ~ continuous_summary("hacinamiento"),
+    statistic = ~"{mean}")
+
+hacinamiento_desagregado
 ```
 
 ```{r}
-#| label: hacinamiento_media_agregada
+#| label: hacinamiento_agregado
 #| echo: false
 
-td_hacinamiento <- df_encuesta |>
+hacinamiento_agregado_intermedio <- df_encuesta |>
 select(viv_n_ambientes, hog_n_miembros_hogar) |>
+summarise(viv_n_ambientes_mean = mean(viv_n_ambientes),
+          hog_n_miembros_hogar_mean = mean(hog_n_miembros_hogar)) 
+
+hacinamiento_agregado <- hacinamiento_agregado_intermedio |>
+summarise("Hacinamiento agregado" = round(mean(hog_n_miembros_hogar_mean / viv_n_ambientes_mean), 1)) |>
+ tbl_custom_summary(
+    include = "Hacinamiento agregado",
+    stat_fns = ~ continuous_summary("Hacinamiento agregado"),
+    statistic = ~"{mean}")
+          
 #mutate(across(c(viv_n_ambientes, viv_n_amb_dormir), ~ as.integer(.))) |>
 #copy_labels_from(df_encuesta) |>
-tbl_summary(
-type = list(c(viv_n_ambientes, hog_n_miembros_hogar) ~ "continuous2"),
-statistic = list(all_continuous2() ~  c(
-  "{mean}",
-  "{median}",
-  "{p25}-{p75}")))
+# tbl_summary(
+# type = list(c(viv_n_ambientes, hog_n_miembros_hogar) ~ "continuous2"),
+# statistic = list(all_continuous2() ~  c(
+#   "{mean}",
+#   "{median}")))
 
-td_hacinamiento
+hacinamiento_agregado
 
-testing1 <- as.numeric(inline_text(td_hacinamiento, variable = viv_n_ambientes))
-testing2 <- as.numeric(inline_text(td_hacinamiento, variable = hog_n_miembros_hogar))
-
+testing1 <- hacinamiento_agregado_intermedio[1]
+testing2 <- hacinamiento_agregado_intermedio[2]
 testing3 <- round(testing2/testing1, 2)
+# testing1 <- as.numeric(inline_text(hacinamiento_agregado_intermedio, variable = viv_n_ambientes))
+# testing2 <- as.numeric(inline_text(hacinamiento_agregado_intermedio, variable = hog_n_miembros_hogar))
+# 
+# testing3 <- round(testing2/testing1, 2)
 ```
+
+Como se observa en
+
+Con los resultados de la tabla anterior a la mano uno se ve tentado de relacionar, más precisamente de dividir, la media de la cantidad de ambientes para dormir (`` `r testing1` ``) sobre la media de la cantidad de miembros del hogar (`` `r testing2` ``). Esta cuentita da que hay `` `r testing3` `` personas por cada ambiente para dormir. Si es por la cuestión de los niveles de medición la operación anterior es legítima. El problema es que el concepto de hacinamiento está pensado para ser calculado para cada hogar por separado y luego, por una cuestión transitiva, imputarlo a cada miembro de ese hogar si se quiere calcular cuantas personas viven hacinadas.
+
+Hay que agregar gráficas de las distribución del hacinamiento desagregado
 
 A continuación se realizará un análisis que muestra diferentes medidas de tendencia central en función del nivel de medición de las variables. Recordar el nivel de medición de las variables es importante para pensar que medida de tendencia central es apropiada calcular. En el caso de los conceptos de cantidad de ambientes, cantidad de habitaciones para dormir y la cantidad de miembros del hogar, la idea de número parece apropiada para representar esas variables. Más especificamente, el concepto de [número natural](https://es.wikipedia.org/wiki/N%C3%BAmero_natural "Ir a número natural") parece servir para representar correctamente sus propiedades. Esto se debe a que, en este contexto no tiene sentido afirmar:
 
@@ -130,10 +153,6 @@ Volviendo a la cuestión del análisis univariado, a continuación se presentan 
 ```{r}
 
 ```
-
-Con los resultados de la tabla anterior a la mano uno se ve tentado de relacionar, más precisamente de dividir, la media de la cantidad de ambientes para dormir (`` `r testing1` ``) sobre la media de la cantidad de miembros del hogar (`` `r testing2` ``). Esta cuentita da que hay `` `r testing3` `` personas por cada ambiente para dormir. Si es por la cuestión de los niveles de medición la operación anterior es legítima. El problema es que el concepto de hacinamiento está pensado para ser calculado para cada hogar por separado y luego, por una cuestión transitiva, imputarlo a cada miembro de ese hogar si se quiere calcular cuantas personas viven hacinadas.
-
-No se trata simplemente de dividir con , respectively
 
 ## Combinando con datos censales
 

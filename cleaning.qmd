@@ -321,11 +321,44 @@ relocate(redes_tu_nombre, .before = redes_1_contacto)
                   
 ```
 
+```{r}
+#| label: etiquetado_valores
+
+# Se eliminan los signos interrogativos de las preguntas que salen del google forms
+
+df_encuesta <- df_encuesta |>
+mutate(across(everything(), ~ str_remove_all(., "[?]")))
+```
+
+### Tipo de datos de las variables
+
+Otro punto a destacar es lo que a veces de suele denominar "nivel de medición" de la variable. Este término se suele utilizar más en programas o lenguajes específicos para análisis de datos pero tienen una similitud con el proceso usual en una planilla de cálculo (excel, google sheet, etc) de aplicarle "formato" a la celda para indicarle si se trata de texto o un número y sí se trata de número de que tipo (porcentaje, fecha, decimal, etc.).
+
+Este tipo de metainformación suele ser útil para que el programa detecte que tipo de gráfico es apropiado o que tipo de cálculo realizar. De todos modos los programas vienen cada vez con mejores heurísticas para adivinar, sin previa indicación de que tipo de dato se trata.
+
+```{r}
+#| label: tipos_de_variable
+
+df_encuesta <- df_encuesta |>
+mutate(across(c(edad,
+              hog_n_miembros_hogar,
+              hog_n_menores_6,
+              viv_altura,
+              viv_n_ambientes,
+              viv_n_amb_dormir,
+              pref_soc_monto_donacion,
+              unaj_n_materias_cursando,
+              trab_horas,
+              ing_n_aportantes,
+              ing_totales), ~ as.numeric(.)))
+
+```
+
 ### Etiquetado de las variables
 
-Antes se habló de renombrar y ordenar las variables. Sin embargo, en las ciencias sociales y en especial en aquellas disciplinas donde se encuentren difundidos programas estadísticos como el SPSS, SAS y Stata se usa la distinción entre **nombre de la variable y etiqueta de la misma**. El primero es como el nombre real de la variable y así lo entiende el mismo programa. La segunda es como un alias o un metadato que permite una interpretación más humana del significado de la variable. Muchas veces el contenido de la etiqueta se acerca a la pregunta original. Ahora bien, las variables, especialmente las que se suelen denomianar discretas o categóricas, aparte de tener un nombre pueden contener una serie finita de categorías.
+Antes se habló de renombrar y ordenar las variables. Sin embargo, en las ciencias sociales y en especial en aquellas disciplinas donde se encuentren difundidos programas estadísticos como el SPSS, SAS y Stata se usa la distinción entre **nombre de la variable y etiqueta de la misma**. El primero es como el nombre real de la variable y así lo entiende el mismo programa. La segunda es como un alias o un metadato que permite una interpretación más humana del significado de la variable. En el caso de las encuestas el contenido de la etiqueta se suele acercar a texto de la pregunta original. Ahora bien, las variables, especialmente las que se suelen denominar discretas o categóricas, aparte de tener un nombre pueden contener una serie finita de categorías.
 
-Cuando se trata de variables del tipo "Indique su cantidad de hijes" si la respuesta de la base de datos es un "2" se entiende que la persona ha respondido que tiene 2 hijes. Lo mismo si aparece un "1" o un "3". Se dice que estos son los **valores** de las variables. Pero el problema comienza, siguiendo una vieja tradición del análisis de datos (ver "De donde vienen las etiquetas") cuando como respuesta a variables del tipo "Indique su género" nos encontramos con símbolos (más precisamente numerales) como "1", "2", etc. en la base de datos. Estos símbolos se suelen llamar **códigos** y, sin información externa, no hay manera de saber que significan. Para eso vuelven en nuestra ayuda las etiquetas
+Cuando se trata de variables del tipo "Indique su cantidad de hijes" si la respuesta de la base de datos es un "2" se entiende que la persona ha respondido que tiene 2 hijes. Lo mismo si aparece un "1" o un "3". Se dice que estos son los **valores** de las variables. Pero el problema comienza, siguiendo una vieja tradición del análisis de datos (ver la nota "De donde vienen las etiquetas") cuando como respuesta a variables del tipo "Indique su género" nos encontramos con símbolos (más precisamente numerales) como "1", "2", etc. en la base de datos. Estos símbolos se suelen llamar **códigos** y, sin información externa, no hay manera de saber que significan. Para resolver este problema entran en nuestra ayuda las etiquetas.
 
 Así como hay etiquetas para los nombres de las variables también lo hay para sus etiquetas.
 
@@ -366,36 +399,12 @@ viv_bano_compartido = "Uso compartido del baño",
 viv_n_ambientes = "Cantidad de ambientes",
 viv_n_amb_dormir = "Cantidad de ambientes para dormir",
 viv_amb_estudio = "Presencia de un ambiente exclusivo para el estudio",
-viv_relacion_legal = "Relación legal con la vivienda")
+viv_relacion_legal = "Relación legal con la vivienda",
+viv_tipo = "Tipo de vivienda")
+
 
 # Grabo el archivo
 
 write_rds(df_encuesta,
           here("Outputs","df_encuesta.rds"))
-
-
-
-```
-
-### Tipo de datos de las variables
-
-Otro punto a destacar es lo que a veces de suele denominar "nivel de medición" de la variable. Este término se suele utilizar más en programas o lenguajes específicos para análisis de datos pero tienen una similitud con el proceso usual en una planilla de cálculo (excel, google sheet, etc) de aplicarle "formato" a la celda para indicarle si se trata de texto o un número y sí se trata de número de que tipo (porcentaje, fecha, decimal, etc.).
-
-Este tipo de metainformación suele ser útil para que el programa detecte que tipo de gráfico es apropiado o que tipo de cálculo realizar. De todos modos los programas vienen cada vez con mejores heurísticas para adiviniar, sin previa indicación de que tipo de dato se trata.
-
-```{r}
-#| label: tipos_de_variable
-
-df_encuesta <- df_encuesta |>
-mutate(across(c(edad,
-              hog_n_miembros_hogar,
-              hog_n_menores_6,
-              viv_altura,
-              viv_n_ambientes,
-              viv_n_amb_dormir,
-              pref_soc_monto_donacion,
-              unaj_n_materias_cursando,
-              trab_horas,
-              ing_n_aportantes,
-              ing_totales), ~ as.numeric(.)))
 ```
