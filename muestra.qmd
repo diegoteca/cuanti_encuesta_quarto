@@ -1,0 +1,25 @@
+---
+title: "Diseño muestral encuesta"
+---
+
+```{r}
+#| label: librerias
+
+remotes::install_github("r-tmap/tmap@v4")
+
+library(here)
+library(arrow)
+library(tidyverse)
+library(tmap)
+library(gtsummary)
+library(gt)
+
+i_am("muestra.qmd")
+```
+
+```{r}
+#| label: insumos
+
+
+
+```
